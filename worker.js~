@@ -4,7 +4,7 @@
 //var num = 2227644437;
 
 // bigarren bertsioan parametro moduan jasotzen dugu zenbakia, eta ondoren is Lehena funtzioari pasa
-//importScripts('http://code.jquery.com/jquery-2.0.0.min.js');
+importScripts('http://code.jquery.com/jquery-2.0.0.min.js');
 
 onmessage = function (event) {
 	//event-en JSON OBJETU BAT JASO
