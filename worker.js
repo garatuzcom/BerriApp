@@ -15,12 +15,17 @@ onmessage = function (event) {
     // bukle bat iturrietatik zehar 
     console.log(event.data);
     
-    var iturriak = JSON.parse(event.data);
+   
+   var iturriak = JSON.parse(event.data);
 
-    console.log (iturriak.Iturriak.length );
-    console.log(iturriak.Iturriak[0].izena);
+	for (i = 0; i< iturriak.length;i++){
+    	//console.log (iturriak.Iturriak.length );
+    	console.log(iturriak.Iturriak[i].izena);
    // alert(iturriZerrenda);
-    eskatuIturria(iturriak.Iturriak[0].helbidea);
+		console.log(  
+		eskatuIturria(iturriak.Iturriak[i].helbidea); 
+   }
+    
     
 }
 
