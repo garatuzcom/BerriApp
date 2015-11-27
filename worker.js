@@ -20,9 +20,9 @@ onmessage = function (event) {
 
 	for (i = 0; i< iturriak.length;i++){
     	//console.log (iturriak.Iturriak.length );
-    	console.log(iturriak.Iturriak[i].izena);
+    	//console.log(iturriak.Iturriak[i].izena);
    // alert(iturriZerrenda);
-		console.log(  
+		console.log("eskatu iturria" + iturriak.Iturriak[i].izenaiturriak + ":" + iturriak.Iturriak[i].helbidea);
 		eskatuIturria(iturriak.Iturriak[i].helbidea); 
    }
     
