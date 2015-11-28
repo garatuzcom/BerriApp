@@ -74,6 +74,8 @@ BerriApp.prototype.kargatuIturriak = function() {
         //Iturri bakoitzari deitu AJAX eskaera
         this.kargatuIturria(gureIturriak.Iturriak[i].izena, gureIturriak.Iturriak[i].helbidea,nireworker);
     }
+    //bukatzen duenean
+    //workerra.postMessage("bukatu");
     
 }
 
@@ -81,51 +83,51 @@ BerriApp.prototype.kargatuIturriak = function() {
 // AJAX eskaera RSS iturriari, > iturriaren arabera trataera bat edo beste eta oinarrizkoa egin ondoren, workerrari bidali.
 // lehen saiakeran, berriak bann banan workerrari
 // workerrak iturri ezberdinak itxoingo ditu, eta denak dituenean ordenatutako emaitza itzuliko du. 
+
+
 BerriApp.prototype.kargatuIturria = function(izena,helbidea,workerra) {
    //helbidea
+     console.log("kargatuIturria> " + izena +  " " + helbidea); 
        $.ajax({
             url : 'berria.xml',
             dataType : 'xml',
             type : 'GET',
             success : function(xml) {
               
-            console.log("honaino ondo");
+            //console.log("honaino ondo");
             //|| (izena.indexOf("Noticias")!=-1))
                 //alert(izena);
+                //berriarentzat item da !
                 $(xml).find('item').each(function() {
                   
                   
                     // XML MOTAREN ARABERA INTERESATZEN ZAIGUNA JASO !!!
                     // HEME ADI CDATA, updated , formatuak... eta berak sartzen dituen iturrietarako regex antzerako bat onartu/ez onartu
                     //var id = $(this).find("id").text();
-                    var pubDate = $(this).find("updated").text();
+                    var pubDate = $(this).find("pubDate").text();
                     var desk =  $(this).find("description").text();
                     var izenb = $(this).find("title").text();
                     var link = $(this).find("link").text();
                     
                     // Berria sortu eta workerrari bidali honek prozesatu ditzan
                     orainBerria = '{ "eguna":"' + pubDate + '", "izenburua":"'+ izenb + '", "deskribapena":"' + desk + '" }';
-                    console.log("ieup");
+                   // console.log(orainBerria);
+                    //console.log(JSON.parse(orainBerria));
                     workerra.postMessage(orainBerria); 
-                    console.log("mezua bidalita" + pubDate);
-                    //var berriBerria = new Berria(link, desk, izenb, link, izenb, link);
-                    // Berria arrayiean sartu
-                   // var zenbat = Berriak.length;
-                   // Berriak.push(berriBerria);
-                    //Berriak[zenb] = berriBerria;
-    //webworkerra deitu eta bere eskaera jaso , ondoren BErriak kargatu!
+            
                 });
            
             },error: function(jqXHR, textStatus, ex) {
                 // erroreak jasotzeko, kasu honetan CORS arazoa... :(
-                        console.log(textStatus + "," + ex + "," + jqXHR.responseText);
+                        console.log("ERROREA EGON DA" + textStatus + "," + ex + "," + jqXHR.responseText);
                 },finish: function(){
-                 console.log('bukatu du');
+                 console.log(izena + 'kargatzen bukatu du');
+                 
              }
    
         });
     
-    console.log("kargatuIturria> " + izena +  " " + helbidea); 
+   
 
     //alert(JSON.stringify(orainBerriak));
     
@@ -139,10 +141,10 @@ BerriApp.prototype.kargatuIturria = function(izena,helbidea,workerra) {
 /*********************************erakutsiBerriak************************************************************************************/
 BerriApp.prototype.erakutsiBerriak = function(){
 
-    for (i=0;i<Berriak.length;i++){
+   /* for (i=0;i<Berriak.length;i++){
       
         console.log(Berria[i].izen + " " + Berria[i].helb);  
-    }
+    }*/
 }
 
 BerriApp.prototype.erakutsiGaiak = function () {
@@ -205,12 +207,12 @@ Berria.prototype.init = function (){
 }
 Berria.prototype.erakutsiBerria = function (){
   
-        console.log( this.itur + " " + this.izen + " " + this.tetu );
+        //console.log( this.itur + " " + this.izen + " " + this.tetu );
   
 }
 Berria.prototype.entzunBerria = function (){
   
-        console.log( "txipiwerik dixo" + this.itur + " " + this.izen + " " + this.tetu );
+        //console.log( "txipiwerik dixo" + this.itur + " " + this.izen + " " + this.tetu );
   
 }
 Berria.prototype.partekatuBerria = function (){

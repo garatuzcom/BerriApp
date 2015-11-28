@@ -2,10 +2,11 @@ onmessage = function (event) {
      // event bakoitza mezu bat da { "eguna":"' + pubDate + '", "izenburua":"'+ title + '", "deskribapena":"' + desk + '" }
     // normalean json datuak bidali baina event bereziak kontrolatu
     
-    console.log(event.data);
+     //console.log(event.data);
     
     if (event.data === "hasi"){
         // workerra martxan jarri berri
+        var berriKop = 0 ;
         var berriOrokorrak = '{"Berriak" : [';
         var berriLaburpena = '{"Berriak" : [';
         console.log("Berriak arrayak sortzen hasita");
@@ -16,31 +17,31 @@ onmessage = function (event) {
    
     } else {
             var berria = JSON.parse(event.data);
-            console.log(berria);
-           
-	
-    
+            console.log (berria);
+            //console.log(berria);
+        
+            berriKop = berriKop + 1;
+            berriakOsorikSortu(berria,berriOrokorrak,berriKop);
+            console.log(berriKop);
     }
 }
 
 // hasierako JSON objetua itzultzeaz arduratzen da
-
 // Behin berriak guztiz kargatuta dagoenean exekutatzen da.
-function berriakOsorikSortu(){
-    
-    var orainBerriak = '{"Berriak" : [';
-  
-    for (var i=0;i<Berriak.length;i++){
-      
-            orainBerriak = orainBerriak + '{ "izena":"' + Berriak[i].izen + '", "helbidea":"'+ Berriak[i].helb + '"}';
-        if ( i != Iturriak.length - 1 ){
-            orainBerriak = orainBerriak + ',';
+
+function berriakOsorikSortu(berria,berriOrokorrak,zkia){
+     
+        if (zkia == 10){
+            berriOrokorrak = berriOrokorrak + ']}';
+            berriLaburpena = berriOrokorrak;
+            //orainBerriak Json Objetua bidali bueltan BerriApp.js -ri
+            console.log("5.mezua");
+            //postMessage(orainBerriak);
+            //console.log(orainBerriak);
+        }else{
+           berriOrokorrak = berriOrokorrak + ',';
+           berriOrokorrak = berriOrokorrak + '{ "izena":"' + berria.eguna + '", "deskribapena":"'+ berria.deskribapena + '"}';
+           console.log(berriOrokorrak);
         }
-           
-    }
-    
-    orainBerriak = orainBerriak + ']}';
-    //orainBerriak Json Objetua bidali bueltan BerriApp.js -ri
-    postMessage(orainBerriak);
 }
-// isLehena funtzioa, ia zki bat lehena den ikusten du eta horren arabera postMessage ezberdina bidaltzen du.
+
