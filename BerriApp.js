@@ -1,13 +1,13 @@
 /* BERRIAPP 2.0 ESKELETOA */
 function BerriApp() {
-   
-   // var erabil = "bai";
 
+   // var berriZerrenda = [];
+    
 }
 /***************************************init***************************************************************************/
 // oraingoz frogetarako hasieraketaz arduratzen da.
 
-BerriApp.prototype.init = function() {
+BerriApp.prototype.init = function () {
     // lehen hasieratzea bada, defektuzko konfigurazioa instalatu
     // bestela, bere konfigurazioa kargatu eta BerriApp objetua sortu
     console.log("sortzen");
@@ -17,16 +17,16 @@ BerriApp.prototype.init = function() {
             localStorage.setItem("1") = 0 ;
            
        }*/
-      this.iturriZerrenda = "";
-      this.berriZerrenda = "";
+
+    this.iturriZerrenda = "";
     
         // iturriak sortu
-       this.sortuIturriak();
+    this.sortuIturriak();
     
-        // iturriak json objetuko elementu bakoitza kargatu 
-       this.kargatuIturriak();
-       //this.kargatuIturriak();
-}
+    // iturriak json objetuko elementu bakoitza kargatu 
+    this.kargatuIturriak();
+    //this.kargatuIturriak();
+};
 /*********************************sortuIturriak*******************************************************************************/
 // hemen gure defektuzko iturriak sortuko dira
 //Lehen exekuzioan , json fitxategia irakurri eta iturri zerrenda 1.0 sortu JSON formatuan. Gero memoriatik kargatu behar da!
@@ -51,13 +51,15 @@ BerriApp.prototype.sortuIturriak = function() {
             }
     
          orainIturriak = orainIturriak + ']}';
-         console.log (JSON.parse(orainIturriak));
+         //console.log (JSON.parse(orainIturriak));
+       
+    
         // gure memorian gorde iturriak 
         localStorage.setItem("iturriak",orainIturriak);
       
     });
 
-}
+};
 /***********************************kargatuIturriak***********************************************************************/
 //Iturrien zerrenda errekorrituko du eta aktibatuta dagoen bakoitzeko eskaera bat egingo dio kargatuIturria-ri
 //Erabiltzaileari iturriak sartzeko aukera emanez gero , kontuan izan. 
@@ -70,14 +72,21 @@ BerriApp.prototype.kargatuIturriak = function() {
     // workerra hasieratu, jasoko dituen berriak prozesatu ditzan
     //nireworker = new Worker('worker.js');
     //nireworker.postMessage("hasi");
+    
+    //iturri kopurua memorian gorde
+    localStorage.setItem("IturriKop", gureIturriak.Iturriak.length);
+    localStorage.setItem("IturriProz", 0 );
+    localStorage.setItem("BerriDenak", "");
+    
     for (i=0;i<gureIturriak.Iturriak.length;i++){
         //Iturri bakoitzari deitu AJAX eskaera
         this.kargatuIturria(gureIturriak.Iturriak[i].izena, gureIturriak.Iturriak[i].helbidea);
+    
     }
     //bukatzen duenean
     //workerra.postMessage("bukatu");
     
-}
+};
 
 //Katea tratatzeko funtzio posible bat... landu behar da
 
@@ -89,6 +98,9 @@ BerriApp.prototype.kateenTratamentua = function(katea) {
 
 }
 
+
+
+
 /**********************************kargatuIturria**********************************************************************************/
 // AJAX eskaera RSS iturriari, > iturriaren arabera trataera bat edo beste eta oinarrizkoa egin ondoren, workerrari bidali.
 // lehen saiakeran, berriak bann banan workerrari
@@ -97,6 +109,9 @@ BerriApp.prototype.kateenTratamentua = function(katea) {
 
 BerriApp.prototype.kargatuIturria = function(izena,helbidea) {
    //helbidea
+
+    var orain = localStorage.getItem("IturriKop");
+    
     var orainBerriak = '{"Berriak" : [';
      console.log("kargatuIturria> " + izena +  " " + helbidea); 
        $.ajax({
@@ -124,7 +139,7 @@ BerriApp.prototype.kargatuIturria = function(izena,helbidea) {
                     izenb = "izenb asmatua";
                     desk = "desk asmatua";
                     // hemen enkoding arazoa konpondu behar da 
-                    orainBerriak = orainBerriak + '{ "eguna":"' + pubDate + '", "izenburua":"'+ izenb + '", "deskribapena":"' + desk + '" }';            
+                    orainBerriak = orainBerriak + '{ "eguna":"' + pubDate + '", "izenburua":"' + izenb + '", "deskribapena":"' + desk + '" }';            
                         
                     
                     if ( berriKont != berriKop - 1 ){
@@ -137,12 +152,24 @@ BerriApp.prototype.kargatuIturria = function(izena,helbidea) {
                     //console.log(JSON.parse(orainBerria));
                     //workerra.postMessage(orainBerria); 
                 
-                });
-            
-            //buklea bukatzen duenean, orainBerriak bukatu
-            orainBerriak = orainBerriak + ']}';
-            console.log(JSON.parse(orainBerriak));
-            //workerra.postMessage(orainBerria); 
+                    });
+                   
+                    //buklea bukatzen duenean, orainBerriak bukatu
+                    orainBerriak = orainBerriak + ']}';
+                    console.log(JSON.parse(orainBerriak));
+                    
+                    var zkiberria = parseInt(localStorage.getItem("IturriProz")) + 1;
+                    localStorage.setItem("IturriProz", zkiberria );
+                   
+                    localStorage.setItem("BerriDenak", localStorage.getItem("BerriDenak") + orainBerriak );
+                    //ikusiAzkenIturria(orainBerriak);
+                    //this.berriZerrenda.push(orainBerriak);
+                    //workerra.postMessage(orainBerria); 
+                     if ( orain == zkiberria ){
+                            //ITURRI GUZTIAK EXEKUTATU DIREN SEINALE ! BERAZ, BERRIAK TRATATU
+                            console.log("berriak tratatzen hasi");
+                         console.log(localStorage.getItem("BerriDenak"));
+                    }
             },error: function(jqXHR, textStatus, ex) {
                 // erroreak jasotzeko, kasu honetan CORS arazoa... :(
                         console.log("ERROREA EGON DA" + textStatus + "," + ex + "," + jqXHR.responseText);
@@ -150,17 +177,18 @@ BerriApp.prototype.kargatuIturria = function(izena,helbidea) {
    
         });
     
-   
-
     //alert(JSON.stringify(orainBerriak));
-    
-    
     //console.log(JSON.parse(orainBerriak));
     //nireworker = new Worker('worker.js');
     //nireworker.postMessage(orainBerriak);
     
 }
 
+
+BerriApp.prototype.ordenatuBerriak = function() {
+
+    console.log("Ieup");
+}
 /*********************************erakutsiBerriak************************************************************************************/
 
 
