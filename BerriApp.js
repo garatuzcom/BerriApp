@@ -4,7 +4,7 @@ function BerriApp() {
    // var erabil = "bai";
 
 }
-/***************************************init*******************************************************/
+/***************************************init***************************************************************************/
 // oraingoz frogetarako hasieraketaz arduratzen da.
 
 BerriApp.prototype.init = function() {
@@ -18,7 +18,7 @@ BerriApp.prototype.init = function() {
            
        }*/
       this.iturriZerrenda = "";
-      var berriZerrenda = "";
+      this.berriZerrenda = "";
     
         // iturriak sortu
        this.sortuIturriak();
@@ -51,7 +51,7 @@ BerriApp.prototype.sortuIturriak = function() {
             }
     
          orainIturriak = orainIturriak + ']}';
-         
+         console.log (JSON.parse(orainIturriak));
         // gure memorian gorde iturriak 
         localStorage.setItem("iturriak",orainIturriak);
       
@@ -68,15 +68,25 @@ BerriApp.prototype.kargatuIturriak = function() {
     var gureIturriak = JSON.parse(localStorage.getItem("iturriak"));
     
     // workerra hasieratu, jasoko dituen berriak prozesatu ditzan
-    nireworker = new Worker('worker.js');
-    nireworker.postMessage("hasi");
+    //nireworker = new Worker('worker.js');
+    //nireworker.postMessage("hasi");
     for (i=0;i<gureIturriak.Iturriak.length;i++){
         //Iturri bakoitzari deitu AJAX eskaera
-        this.kargatuIturria(gureIturriak.Iturriak[i].izena, gureIturriak.Iturriak[i].helbidea,nireworker);
+        this.kargatuIturria(gureIturriak.Iturriak[i].izena, gureIturriak.Iturriak[i].helbidea);
     }
     //bukatzen duenean
     //workerra.postMessage("bukatu");
     
+}
+
+//Katea tratatzeko funtzio posible bat... landu behar da
+
+BerriApp.prototype.kateenTratamentua = function(katea) {
+
+   
+    var kateatratatzeko = encodeURIComponent(katea);
+    return kateatratatzeko;
+
 }
 
 /**********************************kargatuIturria**********************************************************************************/
@@ -85,15 +95,18 @@ BerriApp.prototype.kargatuIturriak = function() {
 // workerrak iturri ezberdinak itxoingo ditu, eta denak dituenean ordenatutako emaitza itzuliko du. 
 
 
-BerriApp.prototype.kargatuIturria = function(izena,helbidea,workerra) {
+BerriApp.prototype.kargatuIturria = function(izena,helbidea) {
    //helbidea
+    var orainBerriak = '{"Berriak" : [';
      console.log("kargatuIturria> " + izena +  " " + helbidea); 
        $.ajax({
             url : 'berria.xml',
             dataType : 'xml',
             type : 'GET',
             success : function(xml) {
-              
+            
+            var berriKop = $(xml).find("item").length;
+            var berriKont = 0 ;
             //console.log("honaino ondo");
             //|| (izena.indexOf("Noticias")!=-1))
                 //alert(izena);
@@ -108,22 +121,32 @@ BerriApp.prototype.kargatuIturria = function(izena,helbidea,workerra) {
                     var desk =  $(this).find("description").text();
                     var izenb = $(this).find("title").text();
                     var link = $(this).find("link").text();
+                    izenb = "izenb asmatua";
+                    desk = "desk asmatua";
+                    // hemen enkoding arazoa konpondu behar da 
+                    orainBerriak = orainBerriak + '{ "eguna":"' + pubDate + '", "izenburua":"'+ izenb + '", "deskribapena":"' + desk + '" }';            
+                        
                     
+                    if ( berriKont != berriKop - 1 ){
+                        berriKont = berriKont + 1;
+                        orainBerriak = orainBerriak + ',' ;
+                    }
                     // Berria sortu eta workerrari bidali honek prozesatu ditzan
-                    orainBerria = '{ "eguna":"' + pubDate + '", "izenburua":"'+ izenb + '", "deskribapena":"' + desk + '" }';
+                    //orainBerria = '{ "eguna":"' + pubDate + '", "izenburua":"'+ izenb + '", "deskribapena":"' + desk + '" }';
                    // console.log(orainBerria);
                     //console.log(JSON.parse(orainBerria));
-                    workerra.postMessage(orainBerria); 
-            
+                    //workerra.postMessage(orainBerria); 
+                
                 });
-           
+            
+            //buklea bukatzen duenean, orainBerriak bukatu
+            orainBerriak = orainBerriak + ']}';
+            console.log(JSON.parse(orainBerriak));
+            //workerra.postMessage(orainBerria); 
             },error: function(jqXHR, textStatus, ex) {
                 // erroreak jasotzeko, kasu honetan CORS arazoa... :(
                         console.log("ERROREA EGON DA" + textStatus + "," + ex + "," + jqXHR.responseText);
-                },finish: function(){
-                 console.log(izena + 'kargatzen bukatu du');
-                 
-             }
+            }
    
         });
     
@@ -139,6 +162,8 @@ BerriApp.prototype.kargatuIturria = function(izena,helbidea,workerra) {
 }
 
 /*********************************erakutsiBerriak************************************************************************************/
+
+
 BerriApp.prototype.erakutsiBerriak = function(){
 
    /* for (i=0;i<Berriak.length;i++){
