@@ -15,6 +15,9 @@ BerriApp.prototype.init = function() {
             localStorage.setItem("1") = 0 ;
            
        }*/
+      this.iturriZerrenda = "";
+      var berriZerrenda = "";
+  
        this.sortuIturriak();
        this.erakutsiIturriak();
        this.kargatuIturriak();
@@ -22,34 +25,53 @@ BerriApp.prototype.init = function() {
 
 BerriApp.prototype.sortuIturriak = function() {
 // hemen gure defektuzko iturriak sortuko dira
-    var id_list = ["berria","bertsozale","eitb"];
-        //ikusiko den izena   
-        var iturri_list = ["Berria","Bertsozale","Eitb"];
-        //RSS url-a   
-        var url_list =["http://www.berria.info/rss/ediziojarraia.xml","http://www.bertsozale.com/eu/eu/albisteak/aggregator/RSS","http://www.eitb.com/eu/rss/albisteak/"];
-        // iturri kopururaren arabera
-        // tamaina = id_list.length edo holako zeoze gero
-        var tamaina = 3;
-        for (i=0;i<tamaina;i++){
-            //jatorri objetuak sortu eta
-            iturriBerria = new Iturria(iturri_list[i],url_list[i]);
-            iturriBerria.aktibatu();
-            //jatorriak arrayra sartu hurrengo posizioan               
-            //var zenbat = Iturriak[i].length;           
-            //Iturriak[zenbat] = jatorriBerria;   
-            Iturriak.push(iturriBerria);
-        }
+//Lehen exekuzioan , json fitxategia irakurri eta iturri zerrenda 1.0 sortu. Gero memoriatik kargatu!
+    
+    var orainIturriak = '{"Iturriak" : [';
+    
+    $.getJSON('Iturriak.json', function(data) {
+       
+            var items = [];
+            /*elementuak iteratzeko beste modu bat $.each( data, function() {
+                alert( data.Iturriak[0].izena );
+                
+            });*/
+            for (i=0;i<data.Iturriak.length;i++){
+                //console.log (data.Iturriak[i].izena);
+              
+                    orainIturriak = orainIturriak + '{ "izena":"' + data.Iturriak[i].izena + '", "helbidea":"'+ data.Iturriak[i].helbidea + '"}';
+                
+                if ( i != data.Iturriak.length - 1 ){
+                    orainIturriak = orainIturriak + ',';
+                }           
+            }
+    
+         orainIturriak = orainIturriak + ']}';
+         
+        // gure memorian gorde iturriak
+        localStorage.setItem("iturriak",JSON.stringify(orainIturriak));
+        //alert(JSON.parse(localStorage.getItem("iturriak")));
+            
+        //alert("json eskuratzen" + data);
+        //this.iturriZerrenda =JSON.parse(data); 
+    });
+
 }
-
-
-
 BerriApp.prototype.erakutsiIturriak = function() {
 // Iturrien zerrenda bistaratzeko funtzioa
-     for (i=0;i<Iturriak.length;i++){
+     //for (i=0;i<this.iturriZerrenda.Iturriak.length;i++){
         //console.log(Iturriak[i]);
         // objetuan elementuak hartzeko >> aktibatzeko/desaktibatzeko adib
-        console.log(Iturriak[i].izen);
+       // console.log(this.turriZerrenda.Iturriak[i].izen);
+    
+    //}
+    var orainIturriak = localStorage.getItem("iturriak");
+    var gureIturriak = JSON.parse(orainIturriak);
+    alert(gureIturriak.Iturriak.length);
+    for (i=0;i<orainIturriak.Iturriak[i].length;i++){
+        alert( orainIturriak[i].izena);
     }
+    
 }
 
   
@@ -77,6 +99,7 @@ BerriApp.prototype.kargatuIturriak = function() {
     
     // var iturriDef = JSON.stringify(orainIturriak);
     // workerrari iturriakbidali gure JSON manualak ;)
+    
     nireworker = new Worker('worker.js');
     nireworker.postMessage(orainIturriak);
     

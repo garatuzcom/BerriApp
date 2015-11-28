@@ -18,30 +18,34 @@ onmessage = function (event) {
    
    var iturriak = JSON.parse(event.data);
 
-	for (i = 0; i< iturriak.length;i++){
+	var berriOrokorrak = '{"Berriak" : [';
+
+	for (i = 0; i< iturriak.Iturriak.length;i++){
     	//console.log (iturriak.Iturriak.length );
     	//console.log(iturriak.Iturriak[i].izena);
    // alert(iturriZerrenda);
-		console.log("eskatu iturria" + iturriak.Iturriak[i].izenaiturriak + ":" + iturriak.Iturriak[i].helbidea);
-		eskatuIturria(iturriak.Iturriak[i].helbidea); 
+		console.log("eskatu iturria>>" + iturriak.Iturriak[i].izena + ":" + iturriak.Iturriak[i].helbidea);
+			
+		eskatuIturria(berriOrokorrak,iturriak.Iturriak[i].izena,iturriak.Iturriak[i].helbidea); 
    }
     
     
 }
 
-function eskatuIturria(iturria){
+function eskatuIturria(berriOrokorrak, iturriizena, iturria){
     //jQuery.support.cors = true; // Access-Control-Allow-Origin CORS goiburua nola?
-   
-    $.ajax({
-            url : iturria,
+console.log(iturriizena + " " + iturria);
+ $.ajax({
+            url : berria.xml,
             dataType : 'xml',
             type : 'GET',
-            headers: {"X-My-Custom-Header": "some value"},
+          /*  headers: {"X-My-Custom-Header": "some value"},
             xhrFields: {
-                  'withCredentials': true },
+                  'withCredentials': true },*/
             success : function(xml) {
               
             console.log("honaino ondo");
+				var orainBerriak = '{"Berriak" : [';;        
             //|| (izena.indexOf("Noticias")!=-1))
                 //alert(izena);
                 $(xml).find('entry').each(function() {
@@ -52,11 +56,17 @@ function eskatuIturria(iturria){
                     var izenb = $(this).find("title").text();
                     var link = $(this).find("link").text();
                     console.log(link + pubDate + desk + izenb + link);
+                    
+                  
+            		orainBerriak = orainBerriak + '{ "izenburua":"' + izenb + '", "helbidea":"'+ Iturriak[i].helb + '"}';
+            		orainBerriak = orainBerriak + ',';
+      				berriOrokorrak = berriOrokorrak + '{ "izena":"' + Iturriak[i].izen + '", "helbidea":"'+ Iturriak[i].helb + '"}';
+            		berriOrokorrak = berriOrokorrak + ',';
                     // Berria sortu
-                    var berriBerria = new Berria(link, desk, izenb, link, izenb, link);
+                    //var berriBerria = new Berria(link, desk, izenb, link, izenb, link);
                     // Berria arrayiean sartu
                    // var zenbat = Berriak.length;
-                    Berriak.push(berriBerria);
+      //              Berriak.push(berriBerria);
                     //Berriak[zenb] = berriBerria;
     //webworkerra deitu eta bere eskaera jaso , ondoren BErriak kargatu!
                 });

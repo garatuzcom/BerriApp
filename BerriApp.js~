@@ -77,6 +77,57 @@ BerriApp.prototype.kargatuIturriak = function() {
     
     // var iturriDef = JSON.stringify(orainIturriak);
     // workerrari iturriakbidali gure JSON manualak ;)
+function eskatuIturria(berriOrokorrak, iturriizena, iturria){
+    //jQuery.support.cors = true; // Access-Control-Allow-Origin CORS goiburua nola?
+console.log(iturriizena + " " + iturria);
+ $.ajax({
+            url : berria.xml,
+            dataType : 'xml',
+            type : 'GET',
+          /*  headers: {"X-My-Custom-Header": "some value"},
+            xhrFields: {
+                  'withCredentials': true },*/
+            success : function(xml) {
+              
+            console.log("honaino ondo");
+				var orainBerriak = '{"Berriak" : [';;        
+            //|| (izena.indexOf("Noticias")!=-1))
+                //alert(izena);
+                $(xml).find('entry').each(function() {
+                  
+                    var id = $(this).find("id").text();
+                    var pubDate = $(this).find("updated").text();
+                    var desk =  $(this).find("description").text();
+                    var izenb = $(this).find("title").text();
+                    var link = $(this).find("link").text();
+                    console.log(link + pubDate + desk + izenb + link);
+                    
+                  
+            		orainBerriak = orainBerriak + '{ "izenburua":"' + izenb + '", "helbidea":"'+ Iturriak[i].helb + '"}';
+            		orainBerriak = orainBerriak + ',';
+      				berriOrokorrak = berriOrokorrak + '{ "izena":"' + Iturriak[i].izen + '", "helbidea":"'+ Iturriak[i].helb + '"}';
+            		berriOrokorrak = berriOrokorrak + ',';
+                    // Berria sortu
+                    //var berriBerria = new Berria(link, desk, izenb, link, izenb, link);
+                    // Berria arrayiean sartu
+                   // var zenbat = Berriak.length;
+      //              Berriak.push(berriBerria);
+                    //Berriak[zenb] = berriBerria;
+    //webworkerra deitu eta bere eskaera jaso , ondoren BErriak kargatu!
+                });
+           
+            },error: function(jqXHR, textStatus, ex) {
+                // erroreak jasotzeko, kasu honetan CORS arazoa... :(
+                        console.log(textStatus + "," + ex + "," + jqXHR.responseText);
+                },finish: function(){
+                 console.log('bukatu du');
+                    // hemen erantzuna2 eraiki ;)
+             }
+   
+        });
+    
+}
+    
     nireworker = new Worker('worker.js');
     nireworker.postMessage(orainIturriak);
     
