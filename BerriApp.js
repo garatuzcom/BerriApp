@@ -4,6 +4,8 @@ function BerriApp() {
    // var erabil = "bai";
 
 }
+/***************************************init*******************************************************/
+// oraingoz frogetarako hasieraketaz arduratzen da.
 
 BerriApp.prototype.init = function() {
     // lehen hasieratzea bada, defektuzko konfigurazioa instalatu
@@ -26,11 +28,11 @@ BerriApp.prototype.init = function() {
        //this.kargatuIturriak();
 }
 /*********************************sortuIturriak*******************************************************************************/
-BerriApp.prototype.sortuIturriak = function() {
-    
 // hemen gure defektuzko iturriak sortuko dira
 //Lehen exekuzioan , json fitxategia irakurri eta iturri zerrenda 1.0 sortu JSON formatuan. Gero memoriatik kargatu behar da!
-    
+
+BerriApp.prototype.sortuIturriak = function() {
+        
     var orainIturriak = '{"Iturriak" : [';
     
     $.getJSON('Iturriak.json', function(data) {
@@ -57,35 +59,76 @@ BerriApp.prototype.sortuIturriak = function() {
 
 }
 /***********************************kargatuIturriak***********************************************************************/
+//Iturrien zerrenda errekorrituko du eta aktibatuta dagoen bakoitzeko eskaera bat egingo dio kargatuIturria-ri
+//Erabiltzaileari iturriak sartzeko aukera emanez gero , kontuan izan. 
 
 BerriApp.prototype.kargatuIturriak = function() {
     
+    // memoriatik iturriak kargatu
     var gureIturriak = JSON.parse(localStorage.getItem("iturriak"));
     
+    // workerra hasieratu, jasoko dituen berriak prozesatu ditzan
+    nireworker = new Worker('worker.js');
+    nireworker.postMessage("hasi");
     for (i=0;i<gureIturriak.Iturriak.length;i++){
-        this.kargatuIturria(gureIturriak.Iturriak[i].izena, gureIturriak.Iturriak[i].helbidea);
+        //Iturri bakoitzari deitu AJAX eskaera
+        this.kargatuIturria(gureIturriak.Iturriak[i].izena, gureIturriak.Iturriak[i].helbidea,nireworker);
     }
-      
+    
 }
 
 /**********************************kargatuIturria**********************************************************************************/
-// ajax eskaera RSS iturriari, > iturriaren arabera trataera bat edo beste eta oinarrizkoa egin ondoren, workerrari bidali.
+// AJAX eskaera RSS iturriari, > iturriaren arabera trataera bat edo beste eta oinarrizkoa egin ondoren, workerrari bidali.
+// lehen saiakeran, berriak bann banan workerrari
 // workerrak iturri ezberdinak itxoingo ditu, eta denak dituenean ordenatutako emaitza itzuliko du. 
-BerriApp.prototype.kargatuIturria = function(izena,helbidea) {
-
-   
-    console.log("kargatuIturria> " + izena +  " " + helbidea); 
-    var orainBerriak = '{"Berriak" : [';
-    for (var i=0;i<Iturriak.length;i++){
-      
-            orainBerriak = orainBerriak + '{ "izena":"' + Iturriak[i].izen + '", "helbidea":"'+ Iturriak[i].helb + '"}';
-        if ( i != Iturriak.length - 1 ){
-            orainBerriak = orainBerriak + ',';
-        }
+BerriApp.prototype.kargatuIturria = function(izena,helbidea,workerra) {
+   //helbidea
+       $.ajax({
+            url : 'berria.xml',
+            dataType : 'xml',
+            type : 'GET',
+            success : function(xml) {
+              
+            console.log("honaino ondo");
+            //|| (izena.indexOf("Noticias")!=-1))
+                //alert(izena);
+                $(xml).find('item').each(function() {
+                  
+                  
+                    // XML MOTAREN ARABERA INTERESATZEN ZAIGUNA JASO !!!
+                    // HEME ADI CDATA, updated , formatuak... eta berak sartzen dituen iturrietarako regex antzerako bat onartu/ez onartu
+                    //var id = $(this).find("id").text();
+                    var pubDate = $(this).find("updated").text();
+                    var desk =  $(this).find("description").text();
+                    var izenb = $(this).find("title").text();
+                    var link = $(this).find("link").text();
+                    
+                    // Berria sortu eta workerrari bidali honek prozesatu ditzan
+                    orainBerria = '{ "eguna":"' + pubDate + '", "izenburua":"'+ izenb + '", "deskribapena":"' + desk + '" }';
+                    console.log("ieup");
+                    workerra.postMessage(orainBerria); 
+                    console.log("mezua bidalita" + pubDate);
+                    //var berriBerria = new Berria(link, desk, izenb, link, izenb, link);
+                    // Berria arrayiean sartu
+                   // var zenbat = Berriak.length;
+                   // Berriak.push(berriBerria);
+                    //Berriak[zenb] = berriBerria;
+    //webworkerra deitu eta bere eskaera jaso , ondoren BErriak kargatu!
+                });
            
-    }
+            },error: function(jqXHR, textStatus, ex) {
+                // erroreak jasotzeko, kasu honetan CORS arazoa... :(
+                        console.log(textStatus + "," + ex + "," + jqXHR.responseText);
+                },finish: function(){
+                 console.log('bukatu du');
+             }
+   
+        });
     
-    orainBerriak = orainBerriak + ']}';
+    console.log("kargatuIturria> " + izena +  " " + helbidea); 
+
+    //alert(JSON.stringify(orainBerriak));
+    
     
     //console.log(JSON.parse(orainBerriak));
     //nireworker = new Worker('worker.js');
@@ -178,7 +221,4 @@ Berria.prototype.partekatuBerria = function (){
 var e = new BerriApp();
 e.init();
 
-var i = new Berria('x','x','x','x','x','x');
-i.erakutsiBerria();
-i.entzunBerria();
 //var nireBerria= new Berria("x,"x","x","x","x","x");
