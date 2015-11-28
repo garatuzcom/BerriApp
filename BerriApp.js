@@ -17,27 +17,29 @@ BerriApp.prototype.init = function() {
        }*/
       this.iturriZerrenda = "";
       var berriZerrenda = "";
-  
+    
+        // iturriak sortu
        this.sortuIturriak();
-       this.erakutsiIturriak();
+    
+        // iturriak json objetuko elementu bakoitza kargatu 
        this.kargatuIturriak();
+       //this.kargatuIturriak();
 }
-
+/*********************************sortuIturriak*******************************************************************************/
 BerriApp.prototype.sortuIturriak = function() {
+    
 // hemen gure defektuzko iturriak sortuko dira
-//Lehen exekuzioan , json fitxategia irakurri eta iturri zerrenda 1.0 sortu. Gero memoriatik kargatu!
+//Lehen exekuzioan , json fitxategia irakurri eta iturri zerrenda 1.0 sortu JSON formatuan. Gero memoriatik kargatu behar da!
     
     var orainIturriak = '{"Iturriak" : [';
     
     $.getJSON('Iturriak.json', function(data) {
-       
-            var items = [];
             /*elementuak iteratzeko beste modu bat $.each( data, function() {
                 alert( data.Iturriak[0].izena );
                 
             });*/
             for (i=0;i<data.Iturriak.length;i++){
-                //console.log (data.Iturriak[i].izena);
+              
               
                     orainIturriak = orainIturriak + '{ "izena":"' + data.Iturriak[i].izena + '", "helbidea":"'+ data.Iturriak[i].helbidea + '"}';
                 
@@ -48,64 +50,50 @@ BerriApp.prototype.sortuIturriak = function() {
     
          orainIturriak = orainIturriak + ']}';
          
-        // gure memorian gorde iturriak
-        localStorage.setItem("iturriak",JSON.stringify(orainIturriak));
-        //alert(JSON.parse(localStorage.getItem("iturriak")));
-            
-        //alert("json eskuratzen" + data);
-        //this.iturriZerrenda =JSON.parse(data); 
+        // gure memorian gorde iturriak 
+        localStorage.setItem("iturriak",orainIturriak);
+      
     });
 
 }
-BerriApp.prototype.erakutsiIturriak = function() {
-// Iturrien zerrenda bistaratzeko funtzioa
-     //for (i=0;i<this.iturriZerrenda.Iturriak.length;i++){
-        //console.log(Iturriak[i]);
-        // objetuan elementuak hartzeko >> aktibatzeko/desaktibatzeko adib
-       // console.log(this.turriZerrenda.Iturriak[i].izen);
+/***********************************kargatuIturriak***********************************************************************/
+
+BerriApp.prototype.kargatuIturriak = function() {
     
-    //}
-    var orainIturriak = localStorage.getItem("iturriak");
-    var gureIturriak = JSON.parse(orainIturriak);
-    alert(gureIturriak.Iturriak.length);
-    for (i=0;i<orainIturriak.Iturriak[i].length;i++){
-        alert( orainIturriak[i].izena);
+    var gureIturriak = JSON.parse(localStorage.getItem("iturriak"));
+    
+    for (i=0;i<gureIturriak.Iturriak.length;i++){
+        this.kargatuIturria(gureIturriak.Iturriak[i].izena, gureIturriak.Iturriak[i].helbidea);
     }
-    
+      
 }
 
-  
-BerriApp.prototype.kargatuIturriak = function() {
- // honetarako workerrak erabili, bigarren planuak kargatu daitezen. "Lan zikina" eurak ein ta guri emaitza bueltau
-    
-    //aktibo dauden iturriak ikusi , eta workerrari zerrenda pasa! 
-    //erabiltzaileak iturriak definitzeko aukera izaten badu. Gure iturriak + erabiltzailearenak
-    //eskaeraren arabera, worker bat baino gehiago erabili ahal ditxugu, edo eta baten kontrolatzaile lanak ein,
-    // kategoria, edo iturri bat soilik dan ikusteko...
+/**********************************kargatuIturria**********************************************************************************/
+// ajax eskaera RSS iturriari, > iturriaren arabera trataera bat edo beste eta oinarrizkoa egin ondoren, workerrari bidali.
+// workerrak iturri ezberdinak itxoingo ditu, eta denak dituenean ordenatutako emaitza itzuliko du. 
+BerriApp.prototype.kargatuIturria = function(izena,helbidea) {
 
-    // Aktibatuta dauden iturrien JSON objetu BERRIA ERAIKI (balioak koma bikoitzaz) 
-    var orainIturriak = '{"Iturriak" : [';
+   
+    console.log("kargatuIturria> " + izena +  " " + helbidea); 
+    var orainBerriak = '{"Berriak" : [';
     for (var i=0;i<Iturriak.length;i++){
-        if ( Iturriak[i].akti == 1 ){
-            orainIturriak = orainIturriak + '{ "izena":"' + Iturriak[i].izen + '", "helbidea":"'+ Iturriak[i].helb + '"}';
+      
+            orainBerriak = orainBerriak + '{ "izena":"' + Iturriak[i].izen + '", "helbidea":"'+ Iturriak[i].helb + '"}';
         if ( i != Iturriak.length - 1 ){
-            orainIturriak = orainIturriak + ',';
+            orainBerriak = orainBerriak + ',';
         }
            
-        }
     }
     
-    orainIturriak = orainIturriak + ']}';
+    orainBerriak = orainBerriak + ']}';
     
-    // var iturriDef = JSON.stringify(orainIturriak);
-    // workerrari iturriakbidali gure JSON manualak ;)
-    
-    nireworker = new Worker('worker.js');
-    nireworker.postMessage(orainIturriak);
+    //console.log(JSON.parse(orainBerriak));
+    //nireworker = new Worker('worker.js');
+    //nireworker.postMessage(orainBerriak);
     
 }
 
-
+/*********************************erakutsiBerriak************************************************************************************/
 BerriApp.prototype.erakutsiBerriak = function(){
 
     for (i=0;i<Berriak.length;i++){
