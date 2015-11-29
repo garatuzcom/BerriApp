@@ -10,7 +10,7 @@ function BerriApp() {
 BerriApp.prototype.init = function () {
     // lehen hasieratzea bada, defektuzko konfigurazioa instalatu
     // bestela, bere konfigurazioa kargatu eta BerriApp objetua sortu
-    console.log("sortzen");
+    console.log('sortzen');
     /* if ( localStorage.getItem("1") != 0 ){
 
             this.sortuIturriak();
@@ -25,6 +25,7 @@ BerriApp.prototype.init = function () {
     
     // iturriak json objetuko elementu bakoitza kargatu 
     this.kargatuIturriak();
+    //this.ordenatuBerriak();
     //this.kargatuIturriak();
 };
 /*********************************sortuIturriak*******************************************************************************/
@@ -77,6 +78,7 @@ BerriApp.prototype.kargatuIturriak = function() {
     localStorage.setItem("IturriKop", gureIturriak.Iturriak.length);
     localStorage.setItem("IturriProz", 0 );
     localStorage.setItem("BerriDenak", "");
+    localStorage.setItem('berriGuztiak','{"Berriak" : [');
     
     for (i=0;i<gureIturriak.Iturriak.length;i++){
         //Iturri bakoitzari deitu AJAX eskaera
@@ -140,7 +142,10 @@ BerriApp.prototype.kargatuIturria = function(izena,helbidea) {
                     desk = "desk asmatua";
                     // hemen enkoding arazoa konpondu behar da 
                     orainBerriak = orainBerriak + '{ "eguna":"' + pubDate + '", "izenburua":"' + izenb + '", "deskribapena":"' + desk + '" }';            
-                        
+                    // BERRI GUZTIAK BANAN BANAN GORDETZEN DITUEN OBJETUA > berriGuztiak
+                    var berriGuztiak = localStorage.getItem("berriGuztiak");
+                    berriGuztiak = berriGuztiak + '{ "eguna":"' + pubDate + '", "izenburua":"' + izenb + '", "deskribapena":"' + desk + '" },';            
+                    localStorage.setItem("berriGuztiak",berriGuztiak);    
                     
                     if ( berriKont != berriKop - 1 ){
                         berriKont = berriKont + 1;
@@ -152,23 +157,36 @@ BerriApp.prototype.kargatuIturria = function(izena,helbidea) {
                     //console.log(JSON.parse(orainBerria));
                     //workerra.postMessage(orainBerria); 
                 
-                    });
+                 });
                    
                     //buklea bukatzen duenean, orainBerriak bukatu
                     orainBerriak = orainBerriak + ']}';
-                    console.log(JSON.parse(orainBerriak));
-                    
+                    //console.log(JSON.parse(orainBerriak));
+                
+                    //ITURRIA PROZESATU DUENEZ; HAU APUNTATU
                     var zkiberria = parseInt(localStorage.getItem("IturriProz")) + 1;
                     localStorage.setItem("IturriProz", zkiberria );
                    
-                    localStorage.setItem("BerriDenak", localStorage.getItem("BerriDenak") + orainBerriak );
-                    //ikusiAzkenIturria(orainBerriak);
-                    //this.berriZerrenda.push(orainBerriak);
+                    //ORAIN BERRIAK OSATU
+                    localStorage.setItem("orainBerriak", orainBerriak );
                     //workerra.postMessage(orainBerria); 
-                     if ( orain == zkiberria ){
+                    
+                    //AZKEN ITURRIA DEN BEGIRATU, HALA BADA, BERRIGUZTIAK ITXI ETA TRATATZEN HASI
+                    if ( orain == zkiberria ){
                             //ITURRI GUZTIAK EXEKUTATU DIREN SEINALE ! BERAZ, BERRIAK TRATATU
-                            console.log("berriak tratatzen hasi");
-                         console.log(localStorage.getItem("BerriDenak"));
+                        console.log("berriak tratatzen hasi");
+                        // var str = localStorage.getItem("BerriDenak");
+                         //var res = str.replace('{"Berriak"\n:',',');
+                         //console.log(res);
+                         //console.log(JSON.parse(res));
+                         //localStorage.setItem("BerriDenak",res);
+                        var berriGuztiakTrat = localStorage.getItem("berriGuztiak");
+                        berriGuztiakTrat = berriGuztiakTrat.substr(0,berriGuztiakTrat.length-1);
+                        berriGuztiakTrat = berriGuztiakTrat + ']}';
+                        console.log (localStorage.getItem("berriGuztiak"));
+                        localStorage.setItem("berriGuztiak",berriGuztiakTrat)
+
+                        //Function.ordenatuBerriak();
                     }
             },error: function(jqXHR, textStatus, ex) {
                 // erroreak jasotzeko, kasu honetan CORS arazoa... :(
@@ -187,17 +205,15 @@ BerriApp.prototype.kargatuIturria = function(izena,helbidea) {
 
 BerriApp.prototype.ordenatuBerriak = function() {
 
-    console.log("Ieup");
+    var BerriDenak = JSON.parse(localStorage.getItem("berriGuztiak"));
+    //console.log(BerriDenak);
 }
 /*********************************erakutsiBerriak************************************************************************************/
 
 
 BerriApp.prototype.erakutsiBerriak = function(){
 
-   /* for (i=0;i<Berriak.length;i++){
-      
-        console.log(Berria[i].izen + " " + Berria[i].helb);  
-    }*/
+  //get
 }
 
 BerriApp.prototype.erakutsiGaiak = function () {
