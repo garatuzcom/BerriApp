@@ -1,4 +1,7 @@
-/* ORAINGOZ DESKARTATUA DITUEN MUGENGATIK */
+/* BERRIRO MARTXAN, BERRIAK JSON OBJETUA ORDENATZEAZ ETA ITZULTZEAZ ARDURATZEN DA */
+
+/***********************************************onmessage*****************************************************************/
+// mezuak jasotzen dituen funtzio orokorra
 
 onmessage = function (event) {
      // event bakoitza mezu bat da { "eguna":"' + pubDate + '", "izenburua":"'+ title + '", "deskribapena":"' + desk + '" }
@@ -19,50 +22,61 @@ onmessage = function (event) {
         //berriZerb.berriakOsorikSortu();
    
     } else {
-            var berria = JSON.parse(event.data);
+            var berriak = JSON.parse(event.data);
             
             // HEMEN ARRAYA ORDENATU BEHARRA DUGU, EGUNAK MILISEGUNDUTARA PASA, BEGIRATU HANDIENA ETA ORDENATU
             // BEHIN JSON OBJETU BERRIAN 25 elementu daudela >> ITZULI
-            // HURRENGOA 100 ELEMENTU DAUDENEAN ?¿? edo denak daudenean??? erabaki efizientzia
-            
-            console.log (berria);
-            //console.log(berria);
-            //console.log(berriZerb.zkiaEskatu);
-           
-           // berriakOsorikSortu(berria,berriOrokorrak,berriKop);
+            // HURRENGOA 100 ELEMENTU DAUDENEAN ?¿? edo denak daudenean??? erabaki efizientziaren arabera, igual arraya zatitu...
+        
+            // Berriak ordenatzeko funtzioari deitu
+            ordenatuBerriak(berriak,"eguna","asc");
+        
+  
            
     }
 }
+/**************************************ordenatuBerriak*****************************************************************/
+// http://jsfiddle.net/Jsar8/1/
+// Berriak ordenatzeko funtzioak ... 1.0 frogak
 
+function ordenatuBerriak(berriako,prop, asc) {
+    
+    var berriab = berriako.Berriak.sort(function(a, b) {
+        if (asc) {
+            if (a[prop] > b[prop]) return 1;
+            if (a[prop] < b[prop]) return -1;
+            return 0;
+        } else {
+            if (b[prop] > a[prop]) return 1;
+            if (b[prop] < a[prop]) return -1;
+            return 0;
+        }
+        });
+    berriako.Berriak = berriab;
+    //console.log(berriab);
+    // behin berriak ordenatuta, datuak itzuli !
+    postMessage(JSON.stringify(berriako));
+    console.log(berriako);
+    // behin ordenatuta dagoenean, BerriApp.js fitxategiari bidali, bistaratu dezan
+    
+}
 // hasierako JSON objetua itzultzeaz arduratzen da
 // Behin berriak guztiz kargatuta dagoenean exekutatzen da.
-function BerriTratap() {
-   
 
-
-}
-
-BerriTratap.prototype.zkiaEskatu = function(){
-
-    this.zkia = this.zkia + 1;
-    return this.zkia;
-}
 /***************************************init***************************************************************************/
-// oraingoz frogetarako hasieraketaz arduratzen da.
+// oraingoz frogetarako hasieraketaz arduratzen da.baztertua!!!!
 
-BerriTratap.prototype.berriakOsorikSortu = function(berria){
+/*BerriTratap.prototype.berriakOsorikSortu = function(berria){
      
         if (this.zkia == 10){
             berriOrokorrak = berriOrokorrak + ']}';
             berriLaburpena = berriOrokorrak;
-            //orainBerriak Json Objetua bidali bueltan BerriApp.js -ri
-            console.log("5.mezua");
-            //postMessage(orainBerriak);
-            //console.log(orainBerriak);
+          
+           
         }else{
            berriOrokorrak = berriOrokorrak + ',';
            berriOrokorrak = berriOrokorrak + '{ "izena":"' + berria.eguna + '", "deskribapena":"'+ berria.deskribapena + '"}';
            console.log(berriOrokorrak);
         }
-}
+}*/
 

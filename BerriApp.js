@@ -73,6 +73,16 @@ BerriApp.prototype.kargatuIturriak = function() {
     // workerra hasieratu, jasoko dituen berriak prozesatu ditzan
     nireworker = new Worker('worker.js');
     nireworker.postMessage("hasi");
+    //this.erantzunajaso(nireworker);
+    
+    //WORKERRAREN ERANTZUNA JASO (ARRAYA ORDENATUTA)
+    nireworker.onmessage = function (oEvent) {
+        console.log("Workerrak erantzuna bidali du");
+        //console.log(oEvent.data);
+        $("#bista").html(oEvent.data);
+        nireworker.terminate();
+    };
+  
     
     //iturri kopurua memorian gorde
     localStorage.setItem("IturriKop", gureIturriak.Iturriak.length);
@@ -89,6 +99,12 @@ BerriApp.prototype.kargatuIturriak = function() {
     //workerra.postMessage("bukatu");
     
 };
+
+BerriApp.prototype.erantzunaJaso = function(){
+
+
+
+}
 
 /*******************************kateaTratatu*************************************************************************************/
 //Katea tratatzeko funtzio posible bat... landu egin behar da, edozein string arraro jaso
@@ -189,14 +205,14 @@ BerriApp.prototype.kargatuIturria = function(izena,helbidea,workerra) {
                         // HEMEN BERRIAK ERAKUSTEKO FUNTZIOA DEITU!!! >> JSON OBJETUA ONDO ERAIKIA ;)
                         localStorage.setItem("berriGuztiak",berriGuztiakTrat);
                         var BerriDenak = JSON.parse(berriGuztiakTrat);
-                        console.log(BerriDenak);
+                        //console.log(BerriDenak);
                         // Workerrari objetu guztiak bidali tratatu ditzan
                         
                         workerra.postMessage(berriGuztiakTrat);
                         
                         //bistaratzen ia dena ondo doan ikusteko
                     
-                        $("#bista").html(berriGuztiakTrat);
+                        
                         //Function.ordenatuBerriak();
                         // Hemen workerrarekin edo barik, arrayaren ordenatzea konprobatu!!! Ondo egongo litzak
                         // workerrari kate guztia bidlai, eta honek ordenatuta lehen 25ak bidali lehenengo, gero lanean jarraitu
