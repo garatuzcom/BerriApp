@@ -1,6 +1,7 @@
 /* BERRIAPP 2.0 ESKELETOA */
 function BerriApp() {
     this.init();
+    this.berriGuztiakBatean = '';
    // var berriZerrenda = [];
     
 }
@@ -27,12 +28,12 @@ BerriApp.prototype.init = function () {
     this.kargatuIturriak();
     //this.ordenatuBerriak();
     //this.kargatuIturriak();
-};
+}
 /*********************************sortuIturriak*******************************************************************************/
 // hemen gure defektuzko iturriak sortuko dira
 //Lehen exekuzioan , json fitxategia irakurri eta iturri zerrenda 1.0 sortu JSON formatuan. Gero memoriatik kargatu behar da!
 
-BerriApp.prototype.sortuIturriak = function() {
+BerriApp.prototype.sortuIturriak = function () {
         
     var orainIturriak = '{"Iturriak" : [';
     
@@ -60,7 +61,7 @@ BerriApp.prototype.sortuIturriak = function() {
       
     });
 
-};
+}
 /***********************************kargatuIturriak***********************************************************************/
 //Iturrien zerrenda errekorrituko du eta aktibatuta dagoen bakoitzeko eskaera bat egingo dio kargatuIturria-ri
 //Erabiltzaileari iturriak sartzeko aukera emanez gero , kontuan izan. 
@@ -74,19 +75,13 @@ BerriApp.prototype.kargatuIturriak = function() {
     nireworker = new Worker('worker.js');
     nireworker.postMessage("hasi");
     //this.erantzunajaso(nireworker);
-    
-    //WORKERRAREN ERANTZUNA JASO (ARRAYA ORDENATUTA)
-    nireworker.onmessage = function (oEvent) {
-        console.log("Workerrak erantzuna bidali du");
-        //console.log(oEvent.data);
-        $("#bista").html(oEvent.data);
-        nireworker.terminate();
-    };
-  
-    
+   
     //iturri kopurua memorian gorde
+    
     localStorage.setItem("IturriKop", gureIturriak.Iturriak.length);
     localStorage.setItem("IturriProz", 0 );
+    
+    this.berriGuztiakBatean = '{"Berriak" : [';
     localStorage.setItem("BerriDenak", "");
     localStorage.setItem('berriGuztiak','{"Berriak" : [');
     
@@ -96,13 +91,32 @@ BerriApp.prototype.kargatuIturriak = function() {
     
     }
     //bukatzen duenean
+    
+    //WORKERRAREN ERANTZUNA JASO (ARRAYA ORDENATUTA, BERAZ ERAKUSTEKO FUNTZIOARI PASA... orain ERAKUTSI)
+    nireworker.onmessage = function (mezua) {
+        console.log("Workerrak erantzuna bidali du");
+        
+        //mezuak bistaratu
+       
+        
+        BerriApp.prototype.berriakBistaratu(mezua.data);
+        
+        //workerra itxi
+        nireworker.terminate();
+    };
+  
     //workerra.postMessage("bukatu");
     
-};
+}
+//************************************************berriakBistaratu*******************************************************/
 
-BerriApp.prototype.erantzunaJaso = function(){
+BerriApp.prototype.berriakBistaratu = function(mezua){
 
+console.log("erantzuna jaso");
+//console.log(mezua);
+//console.log(JSON.parse(mezua));
 
+    $("#bista").html(mezua);
 
 }
 
@@ -165,6 +179,11 @@ BerriApp.prototype.kargatuIturria = function(izena,helbidea,workerra) {
                     berriGuztiak = berriGuztiak + '{ "eguna":"' + pubDate + '", "izenburua":"' + izenb + '", "deskribapena":"' + desk + '" },';            
                     localStorage.setItem("berriGuztiak",berriGuztiak);    
                     
+                    //hobeto aldagai batean gorde agian.. HEMENDIK JARRAITU ****!!!!!!
+                    this.berriGuztiakBatean = this.berriGuztiakBatean + orainBerriak;
+                    
+                    //console.log(this.berriGuztiakBatean);
+                    
                     if ( berriKont != berriKop - 1 ){
                         berriKont = berriKont + 1;
                         orainBerriak = orainBerriak + ',' ;
@@ -198,6 +217,7 @@ BerriApp.prototype.kargatuIturria = function(izena,helbidea,workerra) {
                         
                         //berriGuztiak JSON objetua string moduan osatzen bukatu
                         var berriGuztiakTrat = localStorage.getItem("berriGuztiak");
+                
                         berriGuztiakTrat = berriGuztiakTrat.substr(0,berriGuztiakTrat.length-1);
                         berriGuztiakTrat = berriGuztiakTrat + ']}';
                         //console.log (localStorage.getItem("berriGuztiak"));
@@ -206,8 +226,9 @@ BerriApp.prototype.kargatuIturria = function(izena,helbidea,workerra) {
                         localStorage.setItem("berriGuztiak",berriGuztiakTrat);
                         var BerriDenak = JSON.parse(berriGuztiakTrat);
                         //console.log(BerriDenak);
-                        // Workerrari objetu guztiak bidali tratatu ditzan
                         
+                        
+                        // Workerrari objetu guztiak bidali tratatu ditzan
                         workerra.postMessage(berriGuztiakTrat);
                         
                         //bistaratzen ia dena ondo doan ikusteko
