@@ -1,6 +1,6 @@
 /* BERRIAPP 2.0 ESKELETOA */
 function BerriApp() {
-
+    this.init();
    // var berriZerrenda = [];
     
 }
@@ -90,7 +90,9 @@ BerriApp.prototype.kargatuIturriak = function() {
     
 };
 
-//Katea tratatzeko funtzio posible bat... landu behar da
+/*******************************kateaTratatu*************************************************************************************/
+//Katea tratatzeko funtzio posible bat... landu egin behar da, edozein string arraro jaso
+// eta ondo kodetuta itzuli behar du honek, gero JSON objetuan ondo gordetzeko
 
 BerriApp.prototype.kateenTratamentua = function(katea) {
 
@@ -173,20 +175,28 @@ BerriApp.prototype.kargatuIturria = function(izena,helbidea) {
                     
                     //AZKEN ITURRIA DEN BEGIRATU, HALA BADA, BERRIGUZTIAK ITXI ETA TRATATZEN HASI
                     if ( orain == zkiberria ){
-                            //ITURRI GUZTIAK EXEKUTATU DIREN SEINALE ! BERAZ, BERRIAK TRATATU
-                        console.log("berriak tratatzen hasi");
-                        // var str = localStorage.getItem("BerriDenak");
-                         //var res = str.replace('{"Berriak"\n:',',');
-                         //console.log(res);
-                         //console.log(JSON.parse(res));
-                         //localStorage.setItem("BerriDenak",res);
+                        
+                        //ITURRI GUZTIAK EXEKUTATU DIREN SEINALE ! BERAZ, BERRIAK TRATATU
+                        //console.log("berriak tratatzen hasi");
+                       
+                        
+                        //berriGuztiak JSON objetua string moduan osatzen bukatu
                         var berriGuztiakTrat = localStorage.getItem("berriGuztiak");
                         berriGuztiakTrat = berriGuztiakTrat.substr(0,berriGuztiakTrat.length-1);
                         berriGuztiakTrat = berriGuztiakTrat + ']}';
-                        console.log (localStorage.getItem("berriGuztiak"));
-                        localStorage.setItem("berriGuztiak",berriGuztiakTrat)
-
+                        //console.log (localStorage.getItem("berriGuztiak"));
+                        
+                        // HEMEN BERRIAK ERAKUSTEKO FUNTZIOA DEITU!!! >> JSON OBJETUA ONDO ERAIKIA ;)
+                        localStorage.setItem("berriGuztiak",berriGuztiakTrat);
+                        var BerriDenak = JSON.parse(berriGuztiakTrat);
+                        console.log(BerriDenak);
+                        //bistaratzen ia dena ondo doan ikusteko
+                        $("#bista").html(berriGuztiakTrat);
                         //Function.ordenatuBerriak();
+                        // Hemen workerrarekin edo barik, arrayaren ordenatzea konprobatu!!! Ondo egongo litzak
+                        // workerrari kate guztia bidlai, eta honek ordenatuta lehen 25ak bidali lehenengo, gero lanean jarraitu
+                        // eta bukatzean itzuli ??? 
+                        
                     }
             },error: function(jqXHR, textStatus, ex) {
                 // erroreak jasotzeko, kasu honetan CORS arazoa... :(
@@ -290,6 +300,6 @@ Berria.prototype.partekatuBerria = function (){
 }
 
 var e = new BerriApp();
-e.init();
+
 
 //var nireBerria= new Berria("x,"x","x","x","x","x");
