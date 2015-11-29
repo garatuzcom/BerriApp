@@ -71,8 +71,8 @@ BerriApp.prototype.kargatuIturriak = function() {
     var gureIturriak = JSON.parse(localStorage.getItem("iturriak"));
     
     // workerra hasieratu, jasoko dituen berriak prozesatu ditzan
-    //nireworker = new Worker('worker.js');
-    //nireworker.postMessage("hasi");
+    nireworker = new Worker('worker.js');
+    nireworker.postMessage("hasi");
     
     //iturri kopurua memorian gorde
     localStorage.setItem("IturriKop", gureIturriak.Iturriak.length);
@@ -82,7 +82,7 @@ BerriApp.prototype.kargatuIturriak = function() {
     
     for (i=0;i<gureIturriak.Iturriak.length;i++){
         //Iturri bakoitzari deitu AJAX eskaera
-        this.kargatuIturria(gureIturriak.Iturriak[i].izena, gureIturriak.Iturriak[i].helbidea);
+        this.kargatuIturria(gureIturriak.Iturriak[i].izena, gureIturriak.Iturriak[i].helbidea,nireworker);
     
     }
     //bukatzen duenean
@@ -111,7 +111,7 @@ BerriApp.prototype.kateenTratamentua = function(katea) {
 // workerrak iturri ezberdinak itxoingo ditu, eta denak dituenean ordenatutako emaitza itzuliko du. 
 
 
-BerriApp.prototype.kargatuIturria = function(izena,helbidea) {
+BerriApp.prototype.kargatuIturria = function(izena,helbidea,workerra) {
    //helbidea
 
     var orain = localStorage.getItem("IturriKop");
@@ -190,7 +190,12 @@ BerriApp.prototype.kargatuIturria = function(izena,helbidea) {
                         localStorage.setItem("berriGuztiak",berriGuztiakTrat);
                         var BerriDenak = JSON.parse(berriGuztiakTrat);
                         console.log(BerriDenak);
+                        // Workerrari objetu guztiak bidali tratatu ditzan
+                        
+                        workerra.postMessage(berriGuztiakTrat);
+                        
                         //bistaratzen ia dena ondo doan ikusteko
+                    
                         $("#bista").html(berriGuztiakTrat);
                         //Function.ordenatuBerriak();
                         // Hemen workerrarekin edo barik, arrayaren ordenatzea konprobatu!!! Ondo egongo litzak

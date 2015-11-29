@@ -10,19 +10,24 @@ onmessage = function (event) {
         // workerra martxan jarri berri
       //  var berriZerb = new BerriTratap();
         
-        var berriOrokorrak = '{"Berriak" : [';
-        var berriLaburpena = '{"Berriak" : [';
-    console.log("Berriak arrayak sortzen hasita");
+        //var berriOrokorrak = '{"Berriak" : [';
+        //var berriLaburpena = '{"Berriak" : [';
+    console.log("Berriak arrayak sortzen hasita Workerrean");
         
     } else if (event.data === "bukatu"){
     
-        berriZerb.berriakOsorikSortu();
+        //berriZerb.berriakOsorikSortu();
    
     } else {
             var berria = JSON.parse(event.data);
+            
+            // HEMEN ARRAYA ORDENATU BEHARRA DUGU, EGUNAK MILISEGUNDUTARA PASA, BEGIRATU HANDIENA ETA ORDENATU
+            // BEHIN JSON OBJETU BERRIAN 25 elementu daudela >> ITZULI
+            // HURRENGOA 100 ELEMENTU DAUDENEAN ?¿? edo denak daudenean??? erabaki efizientzia
+            
             console.log (berria);
             //console.log(berria);
-            console.log(berriZerb.zkiaEskatu);
+            //console.log(berriZerb.zkiaEskatu);
            
            // berriakOsorikSortu(berria,berriOrokorrak,berriKop);
            
