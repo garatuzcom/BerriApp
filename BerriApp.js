@@ -145,15 +145,45 @@ BerriApp.prototype.kargatuIturria = function(izena,helbidea,workerra) {
    //helbidea
 
     var orain = localStorage.getItem("IturriKop");
-    
+    console.log(izena + helbidea);
     var orainBerriak = '{"Berriak" : [';
-     console.log("kargatuIturria> " + izena +  " " + helbidea); 
+     console.log("kargatuIturria> " + izena +  " " + helbidea);
+    //helbidea = helbidea + "&callback + nirefuntzioa";
        $.ajax({
-            url : 'berria.xml',
-            dataType : 'xml',
+           
+            url : "berria.xml", //helbidea
+            dataType :'xml', //CORS saltatzeko bidea hau da!dataType: "jsonp xml","xmlp"
             type : 'GET',
+            //async: true,
+            crossDomain: true,
+            contentType: "text/xml",
+            /*jsonpCallback: function(erantzuna){
+                alert(erantzuna);
+            },*/  
+             xhrFields: {
+                    // The 'xhrFields' property sets additional fields on the XMLHttpRequest.
+                            // This can be used to set the 'withCredentials' property.
+            // Set the value to 'true' if you'd like to pass cookies to the server.
+            // If this is enabled, your server must respond with the header
+            // 'Access-Control-Allow-Credentials: true'.
+                            withCredentials: false
+            },
+            headers: {
+    // Set any custom headers here.
+    // If you set any non-simple headers, your server must include these
+    // headers in the 'Access-Control-Allow-Headers' response header.
+            },
+
+            //crossDomain: true,
+            //jsonp: XMLHttpRequest,  // tried true
+            //jsonpCallback: nirefuntzioa,
+            //
+           // jsonp: true,
             success : function(xml) {
-            
+                console.log("barruan");
+                
+                alert(xml);
+            //console.log(xml);
             var berriKop = $(xml).find("item").length;
             var berriKont = 0 ;
             //console.log("honaino ondo");
@@ -180,7 +210,7 @@ BerriApp.prototype.kargatuIturria = function(izena,helbidea,workerra) {
                     localStorage.setItem("berriGuztiak",berriGuztiak);    
                     
                     //hobeto aldagai batean gorde agian.. HEMENDIK JARRAITU ****!!!!!!
-                    this.berriGuztiakBatean = this.berriGuztiakBatean + orainBerriak;
+                    //this.berriGuztiakBatean = this.berriGuztiakBatean + berriGuztiak;
                     
                     //console.log(this.berriGuztiakBatean);
                     
@@ -205,7 +235,7 @@ BerriApp.prototype.kargatuIturria = function(izena,helbidea,workerra) {
                     localStorage.setItem("IturriProz", zkiberria );
                    
                     //ORAIN BERRIAK OSATU
-                    localStorage.setItem("orainBerriak", orainBerriak );
+                    //localStorage.setItem("orainBerriak", orainBerriak );
                     //workerra.postMessage(orainBerria); 
                     
                     //AZKEN ITURRIA DEN BEGIRATU, HALA BADA, BERRIGUZTIAK ITXI ETA TRATATZEN HASI
@@ -217,7 +247,7 @@ BerriApp.prototype.kargatuIturria = function(izena,helbidea,workerra) {
                         
                         //berriGuztiak JSON objetua string moduan osatzen bukatu
                         var berriGuztiakTrat = localStorage.getItem("berriGuztiak");
-                
+                        //var berriGuztiakTrat = this.berriGuztiakBatean;
                         berriGuztiakTrat = berriGuztiakTrat.substr(0,berriGuztiakTrat.length-1);
                         berriGuztiakTrat = berriGuztiakTrat + ']}';
                         //console.log (localStorage.getItem("berriGuztiak"));
@@ -225,7 +255,7 @@ BerriApp.prototype.kargatuIturria = function(izena,helbidea,workerra) {
                         // HEMEN BERRIAK ERAKUSTEKO FUNTZIOA DEITU!!! >> JSON OBJETUA ONDO ERAIKIA ;)
                         localStorage.setItem("berriGuztiak",berriGuztiakTrat);
                         var BerriDenak = JSON.parse(berriGuztiakTrat);
-                        //console.log(BerriDenak);
+                        console.log(BerriDenak);
                         
                         
                         // Workerrari objetu guztiak bidali tratatu ditzan
