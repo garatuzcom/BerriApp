@@ -121,13 +121,30 @@ console.log("erantzuna jaso");
 }
 
 /*******************************kateaTratatu*************************************************************************************/
-//Katea tratatzeko funtzio posible bat... landu egin behar da, edozein string arraro jaso
-// eta ondo kodetuta itzuli behar du honek, gero JSON objetuan ondo gordetzeko
+//Katea tratatzeko funtzio posible bat... landu egin behar da, edozein string arraro jaso... zoritxarrez encode /decodek ez du ondo //funtzionatzen.... agur efizientzia :( >> replace batzuk >>
+// derrigor ondo kodetuta itzuli behar du honek, gero JSON objetuan ondo gordetzeko
 
 BerriApp.prototype.kateenTratamentua = function(katea) {
 
-   
     var kateatratatzeko = encodeURIComponent(katea);
+    kateatratatzeko = kateatratatzeko.replace(/%20/g, " ");
+    kateatratatzeko = kateatratatzeko.replace(/%22/g, " ");
+    kateatratatzeko = kateatratatzeko.replace(/%26laquo/g,"'");
+    kateatratatzeko = kateatratatzeko.replace(/%26raquo/g,"'");
+    kateatratatzeko = kateatratatzeko.replace(/%3A/g," ");
+    kateatratatzeko = kateatratatzeko.replace(/%3B/g," ");
+    kateatratatzeko = kateatratatzeko.replace(/%3C/g," ");
+    kateatratatzeko = kateatratatzeko.replace(/%3Cp/g," ");
+    kateatratatzeko = kateatratatzeko.replace(/%3Cbr/g," ");
+    kateatratatzeko = kateatratatzeko.replace(/%C3/g," ");
+    kateatratatzeko = kateatratatzeko.replace(/%82/g," ");
+    kateatratatzeko = kateatratatzeko.replace(/%C2/g," ");
+    kateatratatzeko = kateatratatzeko.replace(/%BB/g," ");
+    kateatratatzeko = kateatratatzeko.replace(/%2F/g," ");
+    kateatratatzeko = kateatratatzeko.replace(/%2C/g," ");
+    kateatratatzeko = kateatratatzeko.replace(/%3E/g," ");
+    kateatratatzeko = kateatratatzeko.replace(/br/g," ");
+    kateatratatzeko = kateatratatzeko.replace(/%25/g,"%");
     return kateatratatzeko;
 
 }
@@ -151,38 +168,15 @@ BerriApp.prototype.kargatuIturria = function(izena,helbidea,workerra) {
     //helbidea = helbidea + "&callback + nirefuntzioa";
        $.ajax({
            
-            url : "berria.xml", //helbidea
+            url : "berria.xml",
             dataType :'xml', //CORS saltatzeko bidea hau da!dataType: "jsonp xml","xmlp"
             type : 'GET',
             //async: true,
             crossDomain: true,
             contentType: "text/xml",
-            /*jsonpCallback: function(erantzuna){
-                alert(erantzuna);
-            },*/  
-             xhrFields: {
-                    // The 'xhrFields' property sets additional fields on the XMLHttpRequest.
-                            // This can be used to set the 'withCredentials' property.
-            // Set the value to 'true' if you'd like to pass cookies to the server.
-            // If this is enabled, your server must respond with the header
-            // 'Access-Control-Allow-Credentials: true'.
-                            withCredentials: false
-            },
-            headers: {
-    // Set any custom headers here.
-    // If you set any non-simple headers, your server must include these
-    // headers in the 'Access-Control-Allow-Headers' response header.
-            },
-
-            //crossDomain: true,
-            //jsonp: XMLHttpRequest,  // tried true
-            //jsonpCallback: nirefuntzioa,
-            //
-           // jsonp: true,
             success : function(xml) {
                 console.log("barruan");
-                
-                alert(xml);
+                //alert(xml);
             //console.log(xml);
             var berriKop = $(xml).find("item").length;
             var berriKont = 0 ;
@@ -192,7 +186,7 @@ BerriApp.prototype.kargatuIturria = function(izena,helbidea,workerra) {
                 //berriarentzat item da !
                 $(xml).find('item').each(function() {
                   
-                  
+                  //bertsozale data > <dc:date>
                     // XML MOTAREN ARABERA INTERESATZEN ZAIGUNA JASO !!!
                     // HEME ADI CDATA, updated , formatuak... eta berak sartzen dituen iturrietarako regex antzerako bat onartu/ez onartu
                     //var id = $(this).find("id").text();
@@ -200,8 +194,8 @@ BerriApp.prototype.kargatuIturria = function(izena,helbidea,workerra) {
                     var desk =  $(this).find("description").text();
                     var izenb = $(this).find("title").text();
                     var link = $(this).find("link").text();
-                    izenb = "izenb asmatua";
-                    desk = "desk asmatua";
+                    izenb = BerriApp.prototype.kateenTratamentua(izenb);
+                    desk = BerriApp.prototype.kateenTratamentua(desk);
                     // hemen enkoding arazoa konpondu behar da 
                     orainBerriak = orainBerriak + '{ "eguna":"' + pubDate + '", "izenburua":"' + izenb + '", "deskribapena":"' + desk + '" }';            
                     // BERRI GUZTIAK BANAN BANAN GORDETZEN DITUEN OBJETUA > berriGuztiak
