@@ -1,16 +1,59 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8" />
-   
-<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-
-<script src="BerriApp.js"></script>
-<script src="worker.js"></script>
- 
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
+<script src="js/jquery-1.11.3.min.js"></script>
+<script src="js/jquery.mobile-1.4.5.min.js"></script>
+    <script src="worker.js"></script>
+<script src="js/BerriApp.js"></script>
 
 </head>
 <body>
-    <div id="bista"></div>
+
+<div data-role="page" id="nagusia">
+    
+    <div data-role="panel" id="ezkerMenua" data-position="left" data-display="reveal" data-theme="a">
+        <ul data-role="listview" data-inset="true">
+            <li><a href="#">
+                <img src="css/images/icons-png/rss.png" background="black">
+                <h2>Berriak ikusi</h2>
+                <p>Aukeratutako iturrietako berriak ikusi</p></a>
+            </li>
+            <li><a href="#">
+                <img src="css/images/icons-png/rss.png">
+                <h2>Kategoriak</h2>
+                <p>Berriak kategoriaka ikusi</p></a>
+            </li>
+            <li><a href="#">
+                <img src="css/images/icons-png/rss.png">
+                <h2>Iturriak</h2>
+                <p>Iturriak definitu</p></a>
+            </li>
+            <li><a href="#">
+                <img src="css/images/icons-png/rss.png">
+                <h2>Ezarpenak</h2>
+                <p>Ezarpenak aldatu</p></a>
+            </li>
+            
+        
+        </ul>
+        <!-- panel content goes here -->    
+        froga froga
+    </div><!-- /panel -->
+  <div data-role="header">
+    <h1>BerriApp 2.0</h1>
+  </div>
+
+  <div data-role="main" class="ui-content">
+    <p><a href="#ezkerMenua">zabaldu menua</a></p>
+       <div id="bista"></div>
+  </div>
+
+  <div data-role="footer" data-position="fixed">
+    <h1>Garatuz.com 2015</h1>
+  </div>
+</div> 
+
 </body>
 </html>

@@ -71,7 +71,7 @@ BerriApp.prototype.kargatuIturriak = function() {
     // memoriatik iturriak kargatu
     var gureIturriak = JSON.parse(localStorage.getItem("iturriak"));
     
-    // workerra hasieratu, jasoko dituen berriak prozesatu ditzan
+    // workerra hasieratu, jasoko dituen berriak prozesatu ditzan (ezin da js karpetan sartu oraingoz)
     nireworker = new Worker('worker.js');
     nireworker.postMessage("hasi");
     //this.erantzunajaso(nireworker);
@@ -81,11 +81,18 @@ BerriApp.prototype.kargatuIturriak = function() {
     localStorage.setItem("IturriKop", gureIturriak.Iturriak.length);
     localStorage.setItem("IturriProz", 0 );
     
+    // saiakera objetuaren aldagian stringa gordetzeko
     this.berriGuztiakBatean = '{"Berriak" : [';
+    
+    //Berridenak izeneko aldagaia hustu
     localStorage.setItem("BerriDenak", "");
+    
+    //berriGuztiak izeneko aldagaia hasieratu 
     localStorage.setItem('berriGuztiak','{"Berriak" : [');
     
+    //iturri bakoitzeko, kargatuIturria funtzioari deitu
     for (i=0;i<gureIturriak.Iturriak.length;i++){
+        
         //Iturri bakoitzari deitu AJAX eskaera
         this.kargatuIturria(gureIturriak.Iturriak[i].izena, gureIturriak.Iturriak[i].helbidea,nireworker);
     
@@ -96,10 +103,10 @@ BerriApp.prototype.kargatuIturriak = function() {
     nireworker.onmessage = function (mezua) {
         console.log("Workerrak erantzuna bidali du");
         
-        //mezuak bistaratu
-       
+        //mezuak bistaratu >>
         
-        BerriApp.prototype.berriakBistaratu(mezua.data);
+        
+        BerriApp.prototype.berriakBistaratu(mezua);
         
         //workerra itxi
         nireworker.terminate();
@@ -112,12 +119,14 @@ BerriApp.prototype.kargatuIturriak = function() {
 
 BerriApp.prototype.berriakBistaratu = function(mezua){
 
-console.log("erantzuna jaso");
+console.log("erantzuna jasota eta bistaratzeko prest");
 //console.log(mezua);
-//console.log(JSON.parse(mezua));
+//console.log("BISTARATZEKO MEZU OSOA" + JSON.parse(mezua.data)); //string formatuan dago :(
+    // inprimatu
+    var berriZerrendaOsoa = JSON.parse(mezua.data);
+    console.log("JSON OBJETU ZERRENDA >>" + berriZerrendaOsoa);
 
-    $("#bista").html(mezua);
-
+    $("#bista").html(mezua.data);
 }
 
 /*******************************kateaTratatu*************************************************************************************/
@@ -127,24 +136,25 @@ console.log("erantzuna jaso");
 BerriApp.prototype.kateenTratamentua = function(katea) {
 
     var kateatratatzeko = encodeURIComponent(katea);
-    kateatratatzeko = kateatratatzeko.replace(/%20/g, " ");
-    kateatratatzeko = kateatratatzeko.replace(/%22/g, " ");
-    kateatratatzeko = kateatratatzeko.replace(/%26laquo/g,"'");
-    kateatratatzeko = kateatratatzeko.replace(/%26raquo/g,"'");
-    kateatratatzeko = kateatratatzeko.replace(/%3A/g," ");
-    kateatratatzeko = kateatratatzeko.replace(/%3B/g," ");
-    kateatratatzeko = kateatratatzeko.replace(/%3C/g," ");
-    kateatratatzeko = kateatratatzeko.replace(/%3Cp/g," ");
-    kateatratatzeko = kateatratatzeko.replace(/%3Cbr/g," ");
-    kateatratatzeko = kateatratatzeko.replace(/%C3/g," ");
-    kateatratatzeko = kateatratatzeko.replace(/%82/g," ");
-    kateatratatzeko = kateatratatzeko.replace(/%C2/g," ");
-    kateatratatzeko = kateatratatzeko.replace(/%BB/g," ");
-    kateatratatzeko = kateatratatzeko.replace(/%2F/g," ");
-    kateatratatzeko = kateatratatzeko.replace(/%2C/g," ");
-    kateatratatzeko = kateatratatzeko.replace(/%3E/g," ");
-    kateatratatzeko = kateatratatzeko.replace(/br/g," ");
-    kateatratatzeko = kateatratatzeko.replace(/%25/g,"%");
+        kateatratatzeko = kateatratatzeko.replace(/%20/g, " ");
+        kateatratatzeko = kateatratatzeko.replace(/%22/g, " ");
+        kateatratatzeko = kateatratatzeko.replace(/%26laquo/g,"'");
+        kateatratatzeko = kateatratatzeko.replace(/%26raquo/g,"'");
+        kateatratatzeko = kateatratatzeko.replace(/%3A/g," ");
+        kateatratatzeko = kateatratatzeko.replace(/%3B/g," ");
+        kateatratatzeko = kateatratatzeko.replace(/%3C/g," ");
+        kateatratatzeko = kateatratatzeko.replace(/%3Cp/g," ");
+        kateatratatzeko = kateatratatzeko.replace(/%3Cbr/g," ");
+        kateatratatzeko = kateatratatzeko.replace(/%C3/g," ");
+        kateatratatzeko = kateatratatzeko.replace(/%82/g," ");
+        kateatratatzeko = kateatratatzeko.replace(/%C2/g," ");
+        kateatratatzeko = kateatratatzeko.replace(/%BB/g," ");
+        kateatratatzeko = kateatratatzeko.replace(/%2F/g," ");
+        kateatratatzeko = kateatratatzeko.replace(/%2C/g," ");
+        kateatratatzeko = kateatratatzeko.replace(/%3E/g," ");
+        kateatratatzeko = kateatratatzeko.replace(/br/g," "); //honekin kontuz
+        kateatratatzeko = kateatratatzeko.replace(/%25/g,"%"); // konprobatu ondo dagoela
+        kateatratatzeko = kateatratatzeko.replace(/%AB/g," ");
     return kateatratatzeko;
 
 }
@@ -194,7 +204,7 @@ BerriApp.prototype.kargatuIturria = function(izena,helbidea,workerra) {
                     var desk =  $(this).find("description").text();
                     var izenb = $(this).find("title").text();
                     var link = $(this).find("link").text();
-                    izenb = BerriApp.prototype.kateenTratamentua(izenb);
+                    izenb = BerriApp.prototype.kateenTratamentua(izenb); // hau banan banan egin beharrean guztiari hobeto!
                     desk = BerriApp.prototype.kateenTratamentua(desk);
                     // hemen enkoding arazoa konpondu behar da 
                     orainBerriak = orainBerriak + '{ "eguna":"' + pubDate + '", "izenburua":"' + izenb + '", "deskribapena":"' + desk + '" }';            

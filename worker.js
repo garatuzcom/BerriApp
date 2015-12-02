@@ -57,7 +57,7 @@ function ordenatuBerriak(berriako,prop, asc) {
     // behin berriak ordenatuta, datuak itzuli !
     postMessage(JSON.stringify(berriako));
     //berriak ordenatuta objetua bistaratu kontsolan
-    console.log(berriako);
+    console.log("workerrean eratutakoa" + JSON.stringify(berriako) + berriako.Berriak);
     // behin ordenatuta dagoenean, BerriApp.js fitxategiari bidali, bistaratu dezan
     
 }
