@@ -23,7 +23,8 @@ onmessage = function (event) {
    
     } else {
             var berriak = JSON.parse(event.data);
-            
+        //console.log("JSONERA PASATU BERRI WORKERREAN");
+        //console.log(berriak);
             // HEMEN ARRAYA ORDENATU BEHARRA DUGU, EGUNAK MILISEGUNDUTARA PASA, BEGIRATU HANDIENA ETA ORDENATU
             // BEHIN JSON OBJETU BERRIAN 25 elementu daudela >> ITZULI
             // HURRENGOA 100 ELEMENTU DAUDENEAN ?¿? edo denak daudenean??? erabaki efizientziaren arabera, igual arraya zatitu...
@@ -52,12 +53,18 @@ function ordenatuBerriak(berriako,prop, asc) {
             return 0;
         }
         });
+    //console.log("ORDENATU ONDOREN WORKERREAN");
     berriako.Berriak = berriab;
     //console.log(berriab);
+    berriab = '{ "Berriak" :' + JSON.stringify(berriab) + '}';
+    //console.log(berriab);
+    //console.log("ORDENATU ONDOREN WORKERREAN II");
+    //console.log(JSON.parse(berriab));
     // behin berriak ordenatuta, datuak itzuli !
-    postMessage(JSON.stringify(berriako));
+    //postMessage(JSON.stringify(berriako));
+    postMessage(JSON.stringify(berriab));
     //berriak ordenatuta objetua bistaratu kontsolan
-    console.log("workerrean eratutakoa" + JSON.stringify(berriako) + berriako.Berriak);
+    //console.log("workerrean eratutakoa" + JSON.stringify(berriako) + berriako.Berriak);
     // behin ordenatuta dagoenean, BerriApp.js fitxategiari bidali, bistaratu dezan
     
 }

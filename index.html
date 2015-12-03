@@ -12,25 +12,26 @@
 <body>
 
 <div data-role="page" id="nagusia">
-    
-    <div data-role="panel" id="ezkerMenua" data-position="left" data-display="reveal" data-theme="a">
+<!-- PANELA: Ezkerreko menua ikusteko (revel et left ;) ) -->
+    <div data-role="panel" id="ezkerMenua" data-position="left" data-display="reveal" data-theme="b">
         <ul data-role="listview" data-inset="true">
-            <li><a href="#">
+            <!-- esteka bakoitzak bere funtzioari deitu behar dio eta bista-n kargatu, hau da, bista bakarra -->
+            <li><a href="#" onclick="hasieratuFroga()">
                 <img src="css/images/icons-png/rss.png" background="black">
                 <h2>Berriak ikusi</h2>
                 <p>Aukeratutako iturrietako berriak ikusi</p></a>
             </li>
-            <li><a href="#">
+            <li><a href="#" onclick="erakutsiKategoriak()">
                 <img src="css/images/icons-png/rss.png">
                 <h2>Kategoriak</h2>
                 <p>Berriak kategoriaka ikusi</p></a>
             </li>
-            <li><a href="#">
+            <li><a href="#" onclick="iturriakDefinitu()">
                 <img src="css/images/icons-png/rss.png">
                 <h2>Iturriak</h2>
                 <p>Iturriak definitu</p></a>
             </li>
-            <li><a href="#">
+            <li><a href="#" onclick="ezarpenak()">
                 <img src="css/images/icons-png/rss.png">
                 <h2>Ezarpenak</h2>
                 <p>Ezarpenak aldatu</p></a>
@@ -38,10 +39,10 @@
             
         
         </ul>
-        <!-- panel content goes here -->    
-        froga froga
-    </div><!-- /panel -->
-  <div data-role="header">
+        
+    </div>
+<!-- PANELAren bukaera -->
+  <div data-role="header" data-theme="b">
     <h1>BerriApp 2.0</h1>
   </div>
 
@@ -50,7 +51,7 @@
        <div id="bista"></div>
   </div>
 
-  <div data-role="footer" data-position="fixed">
+  <div data-role="footer" data-position="fixed" data-theme="b">
     <h1>Garatuz.com 2015</h1>
   </div>
 </div> 

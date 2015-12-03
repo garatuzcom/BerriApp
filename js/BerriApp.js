@@ -1,7 +1,7 @@
 /* BERRIAPP 2.0 ESKELETOA */
 function BerriApp() {
     this.init();
-    this.berriGuztiakBatean = '';
+    //this.berriGuztiakBatean = '';
    // var berriZerrenda = [];
     
 }
@@ -12,6 +12,9 @@ BerriApp.prototype.init = function () {
     // lehen hasieratzea bada, defektuzko konfigurazioa instalatu
     // bestela, bere konfigurazioa kargatu eta BerriApp objetua sortu
     console.log('sortzen');
+    
+    //loading ikonoa bista  nagusian ezarri ? 
+    $("#bista").html("<div id='erdian'> <img src='css/images/ajax-loader.gif'></div>");
     /* if ( localStorage.getItem("1") != 0 ){
 
             this.sortuIturriak();
@@ -69,6 +72,7 @@ BerriApp.prototype.sortuIturriak = function () {
 BerriApp.prototype.kargatuIturriak = function() {
     
     // memoriatik iturriak kargatu
+   
     var gureIturriak = JSON.parse(localStorage.getItem("iturriak"));
     
     // workerra hasieratu, jasoko dituen berriak prozesatu ditzan (ezin da js karpetan sartu oraingoz)
@@ -124,9 +128,10 @@ console.log("erantzuna jasota eta bistaratzeko prest");
 //console.log("BISTARATZEKO MEZU OSOA" + JSON.parse(mezua.data)); //string formatuan dago :(
     // inprimatu
     var berriZerrendaOsoa = JSON.parse(mezua.data);
-    console.log("JSON OBJETU ZERRENDA >>" + berriZerrendaOsoa);
-
-    $("#bista").html(mezua.data);
+    //console.log(berriZerrendaOsoa[0].izenburua);
+    console.log("JSON OBJETU ZERRENDA >>" + mezua.data);
+    
+    $("#bista").html(berriZerrendaOsoa);
 }
 
 /*******************************kateaTratatu*************************************************************************************/
@@ -155,6 +160,7 @@ BerriApp.prototype.kateenTratamentua = function(katea) {
         kateatratatzeko = kateatratatzeko.replace(/br/g," "); //honekin kontuz
         kateatratatzeko = kateatratatzeko.replace(/%25/g,"%"); // konprobatu ondo dagoela
         kateatratatzeko = kateatratatzeko.replace(/%AB/g," ");
+       
     return kateatratatzeko;
 
 }
@@ -204,16 +210,17 @@ BerriApp.prototype.kargatuIturria = function(izena,helbidea,workerra) {
                     var desk =  $(this).find("description").text();
                     var izenb = $(this).find("title").text();
                     var link = $(this).find("link").text();
+                    var irudia = "irudia"; // Berriak ez du printzipioz...
                     izenb = BerriApp.prototype.kateenTratamentua(izenb); // hau banan banan egin beharrean guztiari hobeto!
                     desk = BerriApp.prototype.kateenTratamentua(desk);
                     // hemen enkoding arazoa konpondu behar da 
-                    orainBerriak = orainBerriak + '{ "eguna":"' + pubDate + '", "izenburua":"' + izenb + '", "deskribapena":"' + desk + '" }';            
+                    orainBerriak = orainBerriak + '{ "iturria":"' + izena + '", "eguna":"' + pubDate + '", "izenburua":"' + izenb + '", "deskribapena":"' + desk + '", "esteka":"' + link + '", "irudia":"' + irudia +'" }';            
                     // BERRI GUZTIAK BANAN BANAN GORDETZEN DITUEN OBJETUA > berriGuztiak
                     var berriGuztiak = localStorage.getItem("berriGuztiak");
-                    berriGuztiak = berriGuztiak + '{ "eguna":"' + pubDate + '", "izenburua":"' + izenb + '", "deskribapena":"' + desk + '" },';            
+                    berriGuztiak = berriGuztiak + '{ "iturria":"' + izena + '", "eguna":"' + pubDate + '", "izenburua":"' + izenb + '", "deskribapena":"' + desk + '", "esteka":"' + link + '", "irudia":"' + irudia + '" },';            
                     localStorage.setItem("berriGuztiak",berriGuztiak);    
                     
-                    //hobeto aldagai batean gorde agian.. HEMENDIK JARRAITU ****!!!!!!
+                    //hobeto aldagai batean gorde agian.. HEMENDIK JARRAIT,U ****!!!!!!
                     //this.berriGuztiakBatean = this.berriGuztiakBatean + berriGuztiak;
                     
                     //console.log(this.berriGuztiakBatean);
@@ -289,11 +296,6 @@ BerriApp.prototype.kargatuIturria = function(izena,helbidea,workerra) {
 }
 
 
-BerriApp.prototype.ordenatuBerriak = function() {
-
-    var BerriDenak = JSON.parse(localStorage.getItem("berriGuztiak"));
-    //console.log(BerriDenak);
-}
 /*********************************erakutsiBerriak************************************************************************************/
 
 
@@ -375,7 +377,26 @@ Berria.prototype.partekatuBerria = function (){
 
 }
 
-var e = new BerriApp();
+function hasieratuFroga(){
 
+    var e = new BerriApp();
+
+}
+
+function erakutsiKategoriak(){
+     $("#bista").html("Hemen Kategoria zerrenda bistaratu bistan");
+}
+function iturriakDefinitu(){
+    $("#bista").html("Hemen Iturrien zerrenda JSONetik irakurrita + aukeratuak localStoragetik");
+
+}
+function ezarpenak(){
+    $("#bista").html("Irudiak kargatu bai/ez");
+    $("#bista").html("Bistaratzeko berri kopurua ezarri");
+    $("#bista").html("Iturri zerrendan iturri berria txertatu ?");
+    
+    
+
+}
 
 //var nireBerria= new Berria("x,"x","x","x","x","x");
