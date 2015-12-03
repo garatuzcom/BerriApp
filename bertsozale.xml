@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:syn="http://purl.org/rss/1.0/modules/syndication/" xmlns="http://purl.org/rss/1.0/">
+
+
+
+<channel rdf:about="http://www.bertsozale.eus/eu/albisteak/aggregator/RSS">
+  <title>Bertsozale Elkartea</title>
+  <link>http://www.bertsozale.eus</link>
+  <description>Bertsozale Elkartea 1987an sortu zen, bertsoaren bitartez jaso dugun ondareak geroa izan dezan ziurtatu asmoz. Gaur egun Euskal Herri osoko 2400 bertsolari eta bertsozale batzen ditu. Diru-irabazpen asmorik gabeko elkarte soziokulturala da eta bertsolaritza sustatzea du helburu. Bertsolaritzaren geroa ziurtatu asmotan alor ezberdinak lantzen dira eta horretarako lan profesionala eta borondatezkoa uztartzen dira. Horixe da Bertsozale Elkartearen filosofia eta hala agertzen da elkartearen urteko egitasmo zein proiektuetan.</description>
+  <image rdf:resource="http://www.bertsozale.eus/logo.png"/>
+
+  <items>
+    <rdf:Seq>
+      
+        <rdf:li rdf:resource="http://www.bertsozale.eus/eu/albisteak/cantadoriak-eta-bertsolariak-elkarrekin-sardinian"/>
+      
+      
+        <rdf:li rdf:resource="http://www.bertsozale.eus/eu/albisteak/bertsotan-azaleratzen-diren-inertziak-hitzetik-hortzeran"/>
+      
+      
+        <rdf:li rdf:resource="http://www.bertsozale.eus/eu/gipuzkoa/gipuzkoako-bertsolari-txapelketa/albisteak/Azken%20finalaurrekoa%20jokatuko%20da%20Eibarren%20igandean"/>
+      
+      
+        <rdf:li rdf:resource="http://www.bertsozale.eus/eu/albisteak/bertsolaritzak-ere-izango-du-bere-tokia-durangoko-azokan"/>
+      
+      
+        <rdf:li rdf:resource="http://www.bertsozale.eus/eu/albisteak/durangoko-azokari-zabalduko-dio-sareko-plaza-bertsoak"/>
+      
+      
+        <rdf:li rdf:resource="http://www.bertsozale.eus/eu/gipuzkoa/gipuzkoako-bertsolari-txapelketa/albisteak/Tolosako%20finalaurrekoa"/>
+      
+      
+        <rdf:li rdf:resource="http://www.bertsozale.eus/eu/albisteak/taldekako-ekimenetan-jarriko-du-begirada-hitzetik-hortzerak"/>
+      
+      
+        <rdf:li rdf:resource="http://www.bertsozale.eus/eu/albisteak/literatura-modernoa-ere-izan-daiteke-klasikoa-txertatzeko-bide"/>
+      
+      
+        <rdf:li rdf:resource="http://www.bertsozale.eus/eu/gipuzkoa/gipuzkoako-bertsolari-txapelketa/albisteak/igandean-jokatuko-da-tolosan-bigarren-finalaurrekoa"/>
+      
+      
+        <rdf:li rdf:resource="http://www.bertsozale.eus/eu/albisteak/bigarren-hitzordua-dute-bihar-xenpelar-dokumentazio-jardunaldiek"/>
+      
+    </rdf:Seq>
+  </items>
+
+</channel>
+
+
+  <item rdf:about="http://www.bertsozale.eus/eu/albisteak/cantadoriak-eta-bertsolariak-elkarrekin-sardinian">
+    <title>Cantadoriak eta bertsolariak elkarrekin, Sardinian</title>
+    <link>http://www.bertsozale.eus/eu/albisteak/cantadoriak-eta-bertsolariak-elkarrekin-sardinian</link>
+    <description>"Atòbius in Rima" kulturarteko emanaldian izan da Mintzola. Oihana Bartra eta Igor Elortza bertsolariak eta Karlos Aizpurua Mintzolako zuzendaritza kidea izan dira han.</description>
+    <dc:date>2015-12-03T16:47:25Z</dc:date>
+    <dc:type>News Item</dc:type>
+  </item>
+
+
+  <item rdf:about="http://www.bertsozale.eus/eu/albisteak/bertsotan-azaleratzen-diren-inertziak-hitzetik-hortzeran">
+    <title>Bertsotan azaleratzen diren inertziak, Hitzetik Hortzeran</title>
+    <link>http://www.bertsozale.eus/eu/albisteak/bertsotan-azaleratzen-diren-inertziak-hitzetik-hortzeran</link>
+    <description>Maialen Lujanbiok eta Sustrai Colinak beren iritziak emango dituzte gaiaren inguruan. Tartean, bertsoak: Nerea Elustondok ipuin klasikoei buelta eman, eta Unai Iturriagak ipotx bihurtu eta Fredi Paia printzeari kontuak eskatu zizkionekoa ekarriko du saioak gogora.</description>
+    <dc:date>2015-12-03T10:15:46Z</dc:date>
+    <dc:type>News Item</dc:type>
+  </item>
+
+
+  <item rdf:about="http://www.bertsozale.eus/eu/gipuzkoa/gipuzkoako-bertsolari-txapelketa/albisteak/Azken%20finalaurrekoa%20jokatuko%20da%20Eibarren%20igandean">
+    <title>Eibarren jokatuko da igandean azken finalaurrekoa</title>
+    <link>http://www.bertsozale.eus/eu/gipuzkoa/gipuzkoako-bertsolari-txapelketa/albisteak/Azken%20finalaurrekoa%20jokatuko%20da%20Eibarren%20igandean</link>
+    <description>Finalaurrekoetako fasea amaituko da igandean Eibarren. Arkaitz Oiartzabal "Xamoa", Felix Zubia, Iñaki Gurrutxaga, Jon Maia, Mikel Artola eta Nahikari Gabilondo igoko dira Astelena pilotalekuko oholtzara. 17:30etan hasiko da saioa eta irabazlea zuzenean sailkatuko da abenduaren 19an Ilunben jokatuko den finalera. Horrekin batera, Eibarko saioa amaituta jakingo da nortzuk osatuko duten finalean kantatuko duen zortzikoa. Ohi bezala, sarrerak salgai daude www.bertsosarrerak.eus webgunean. </description>
+    <dc:date>2015-12-03T08:36:57Z</dc:date>
+    <dc:type>News Item</dc:type>
+  </item>
+
+
+  <item rdf:about="http://www.bertsozale.eus/eu/albisteak/bertsolaritzak-ere-izango-du-bere-tokia-durangoko-azokan">
+    <title>Bertsolaritzak izango du bere tokia Durangoko Azokan</title>
+    <link>http://www.bertsozale.eus/eu/albisteak/bertsolaritzak-ere-izango-du-bere-tokia-durangoko-azokan</link>
+    <description>Bost emanaldi eta hiru argitalpen berri izango dira. Gipuzkoako Bertsolari Txapelketaren finalerako sarrerak ere eskuragai izango dira.</description>
+    <dc:date>2015-12-01T15:05:47Z</dc:date>
+    <dc:type>News Item</dc:type>
+  </item>
+
+
+  <item rdf:about="http://www.bertsozale.eus/eu/albisteak/durangoko-azokari-zabalduko-dio-sareko-plaza-bertsoak">
+    <title>Durangoko Azokari zabalduko dio sareko plaza Bertsoak</title>
+    <link>http://www.bertsozale.eus/eu/albisteak/durangoko-azokari-zabalduko-dio-sareko-plaza-bertsoak</link>
+    <description>Bertsolaritzak azokan izango duen lekua ezagutuko dugu, bai argitalpenei zein emanaldiei dagokienez.</description>
+    <dc:date>2015-11-30T16:43:54Z</dc:date>
+    <dc:type>News Item</dc:type>
+  </item>
+
+
+  <item rdf:about="http://www.bertsozale.eus/eu/gipuzkoa/gipuzkoako-bertsolari-txapelketa/albisteak/Tolosako%20finalaurrekoa">
+    <title>Unai Agirre nagusitu da Tolosako finalaurrekoan</title>
+    <link>http://www.bertsozale.eus/eu/gipuzkoa/gipuzkoako-bertsolari-txapelketa/albisteak/Tolosako%20finalaurrekoa</link>
+    <description>Gipuzkoako Bertsolari Txapelketako bigarren finalaurrekoa jokatu da arratsaldean Tolosan. Unai Agirrek irabazi du saioa eta horrenbestez zuzenean sailkatu da abenduaren 19ko finalera. Beñat Gaztelumendi eta Iñaki Apalategi sailkatu dira bigarren eta hirugarren, hurrenez hurren. 1.600 bertsozalek lepo bete dute Usabal kiroldegia. Eibarren jokatuko da igandean txapelketako azken finalaurrekoa eta bertan ezagutuko da zein izango den Ilunben kantatuko duen zortzikoa.</description>
+    <dc:date>2015-11-30T12:46:46Z</dc:date>
+    <dc:type>News Item</dc:type>
+  </item>
+
+
+  <item rdf:about="http://www.bertsozale.eus/eu/albisteak/taldekako-ekimenetan-jarriko-du-begirada-hitzetik-hortzerak">
+    <title>Taldekako ekimenetan jarriko du begirada Hitzetik Hortzerak</title>
+    <link>http://www.bertsozale.eus/eu/albisteak/taldekako-ekimenetan-jarriko-du-begirada-hitzetik-hortzerak</link>
+    <description>Eneko Fernandezek, Izar Mendigurenek, Asier Ibaibarriagak eta Amaia Agirrek euren ikuspuntua eman dute.</description>
+    <dc:date>2015-12-03T10:48:03Z</dc:date>
+    <dc:type>News Item</dc:type>
+  </item>
+
+
+  <item rdf:about="http://www.bertsozale.eus/eu/albisteak/literatura-modernoa-ere-izan-daiteke-klasikoa-txertatzeko-bide">
+    <title>"Literatura modernoa ere izan daiteke klasikoa txertatzeko bide"</title>
+    <link>http://www.bertsozale.eus/eu/albisteak/literatura-modernoa-ere-izan-daiteke-klasikoa-txertatzeko-bide</link>
+    <description>Manu Lopez, Patxi Zubizarreta, Aines Dufau eta Bego Alabazan aditu eta arituek hartu dute parte Xenpelar Dokumentazio Jardunaldietako "Idatzitik ahozkora: Itzulitako ipuin unibertsalak liburuetan" saioan.</description>
+    <dc:date>2015-11-25T16:58:08Z</dc:date>
+    <dc:type>News Item</dc:type>
+  </item>
+
+
+  <item rdf:about="http://www.bertsozale.eus/eu/gipuzkoa/gipuzkoako-bertsolari-txapelketa/albisteak/igandean-jokatuko-da-tolosan-bigarren-finalaurrekoa">
+    <title>Igandean jokatuko da Tolosan bigarren finalaurrekoa</title>
+    <link>http://www.bertsozale.eus/eu/gipuzkoa/gipuzkoako-bertsolari-txapelketa/albisteak/igandean-jokatuko-da-tolosan-bigarren-finalaurrekoa</link>
+    <description>Finalaurrekoetako bigarren saioa jokatuko da igandean Tolosako Usabal kiroldegian. Beñat Gaztelumendi, Beñat Lizaso, Iñaki Apalategi, Nerea Elustondo, Oihana Iguaran eta Unai Agirre dira bertan kantatuko duten bertsolariak. 17:30ean hasiko da saioa eta irabazlea zuzenean sailkatuko da abenduaren 19ko finalera. Ohi bezala, sarrerak salgai daude www.bertsosarrerak.eus webgunean.</description>
+    <dc:date>2015-11-25T09:19:02Z</dc:date>
+    <dc:type>News Item</dc:type>
+  </item>
+
+
+  <item rdf:about="http://www.bertsozale.eus/eu/albisteak/bigarren-hitzordua-dute-bihar-xenpelar-dokumentazio-jardunaldiek">
+    <title>Bigarren hitzordua dute bihar Xenpelar Dokumentazio Jardunaldiek</title>
+    <link>http://www.bertsozale.eus/eu/albisteak/bigarren-hitzordua-dute-bihar-xenpelar-dokumentazio-jardunaldiek</link>
+    <description>"Idatzitik ahozkora: Itzulitako ipuin unibertsalak liburuetan" gaiaren inguruan mintzatuko dira bihar parte-hartzaileak. Manu Lopez, Patxi Zubizarreta, Aines Dufau eta Bego Alabazan aditu eta arituak izango dira hizlariak.</description>
+    <dc:date>2015-11-24T11:53:18Z</dc:date>
+    <dc:type>News Item</dc:type>
+  </item>
+
+
+
+</rdf:RDF>

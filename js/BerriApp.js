@@ -146,7 +146,6 @@ BerriApp.prototype.kateenTratamentua = function(katea) {
         kateatratatzeko = kateatratatzeko.replace(/%26laquo/g,"'");
         kateatratatzeko = kateatratatzeko.replace(/%26raquo/g,"'");
         kateatratatzeko = kateatratatzeko.replace(/%3A/g," ");
-        kateatratatzeko = kateatratatzeko.replace(/%3B/g," ");
         kateatratatzeko = kateatratatzeko.replace(/%3C/g," ");
         kateatratatzeko = kateatratatzeko.replace(/%3Cp/g," ");
         kateatratatzeko = kateatratatzeko.replace(/%3Cbr/g," ");
@@ -160,6 +159,12 @@ BerriApp.prototype.kateenTratamentua = function(katea) {
         kateatratatzeko = kateatratatzeko.replace(/br/g," "); //honekin kontuz
         kateatratatzeko = kateatratatzeko.replace(/%25/g,"%"); // konprobatu ondo dagoela
         kateatratatzeko = kateatratatzeko.replace(/%AB/g," ");
+        kateatratatzeko = kateatratatzeko.replace(/%26oacute /g,"'");
+        kateatratatzeko = kateatratatzeko.replace(/%B1/g,"n"); // ñ izan beharko litzake + espazioa kendu> encoding!
+        kateatratatzeko = kateatratatzeko.replace( /%26ntilde/g,"n"); // ñ
+        kateatratatzeko = kateatratatzeko.replace(/%3D/g,"=");// =
+        kateatratatzeko = kateatratatzeko.replace(/%0A/g,"<"); // <
+        kateatratatzeko = kateatratatzeko.replace(/%3B/g,"'");
        
     return kateatratatzeko;
 
@@ -182,9 +187,11 @@ BerriApp.prototype.kargatuIturria = function(izena,helbidea,workerra) {
     var orainBerriak = '{"Berriak" : [';
      console.log("kargatuIturria> " + izena +  " " + helbidea);
     //helbidea = helbidea + "&callback + nirefuntzioa";
+    helbidea = izena + ".xml";
+    console.log(helbidea);
        $.ajax({
            
-            url : "berria.xml",
+            url : helbidea,
             dataType :'xml', //CORS saltatzeko bidea hau da!dataType: "jsonp xml","xmlp"
             type : 'GET',
             //async: true,
@@ -391,6 +398,26 @@ function iturriakDefinitu(){
 
 }
 function ezarpenak(){
+        
+        
+    	for(var i=0; i<Iturriak.length; i++){
+			//alert(iturri_list[i]);
+      			var logob = puntuKendu(id_list[i]);
+      			$("#iturriak").append("<span style='font-size:20px;'><input type='checkbox' id='"+id_list[i]+"' /><label for='" + id_list[i] + "'><img height='18px' width='18px' src='assets/css/images/logoak/" + logob + ".png'>" + "      " + iturri_list[i] + "</label></span><hr>");	
+			
+				if (getBalioa(id_list[i]) == 1) {
+					$('#'+id_list[i]).prop("checked", true);
+				} else {
+					$('#'+id_list[i]).prop("checked", false);
+				}	
+				
+				if ((id_list[i])=="zuzeu"){
+					//alert("barruan");
+					$("#iturriak").append("<strong>Euskaraz eta erderaz</strong>");
+					$("#iturriak").append("<hr>");
+				}
+			}
+    
     $("#bista").html("Irudiak kargatu bai/ez");
     $("#bista").html("Bistaratzeko berri kopurua ezarri");
     $("#bista").html("Iturri zerrendan iturri berria txertatu ?");
