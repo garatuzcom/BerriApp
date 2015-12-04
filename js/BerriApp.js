@@ -140,7 +140,8 @@ console.log("erantzuna jasota eta bistaratzeko prest");
 
 BerriApp.prototype.kateenTratamentua = function(katea) {
 
-    var kateatratatzeko = encodeURIComponent(katea);
+    var kateatratatzeko = encodeURIComponent(katea); // mmm beharrezkoa?
+    
         kateatratatzeko = kateatratatzeko.replace(/%20/g, " ");
         kateatratatzeko = kateatratatzeko.replace(/%22/g, " ");
         kateatratatzeko = kateatratatzeko.replace(/%26laquo/g,"'");
@@ -315,7 +316,7 @@ BerriApp.prototype.erakutsiGaiak = function () {
 
 }
 BerriApp.prototype.erakutsiEzarpenak = function () {
-
+    
 }
 BerriApp.prototype.aldatuEzarpenak = function () {
 
@@ -394,33 +395,23 @@ function erakutsiKategoriak(){
      $("#bista").html("Hemen Kategoria zerrenda bistaratu bistan");
 }
 function iturriakDefinitu(){
-    $("#bista").html("Hemen Iturrien zerrenda JSONetik irakurrita + aukeratuak localStoragetik");
-
+   // $("#bista").html("Hemen Iturrien zerrenda JSONetik irakurrita + aukeratuak localStoragetik");
+     var gureIturriak = JSON.parse(localStorage.getItem("iturriak"));
+  //  $("#bista").append("<ul>");
+    	for(var i=0; i<gureIturriak.Iturriak.length; i++){
+			//alert(iturri_list[i]);
+      			var logob = gureIturriak.Iturriak[i].izena;
+      			$("#bista").append("<input type='checkbox' id='" + gureIturriak.Iturriak[i].izena + "' style='float:left' /><span style='font-size:20px;'><label for='" + gureIturriak.Iturriak[i].izena + "'><img height='18px' width='18px' src='css/images/icon-berriapp-old/logoak/" + logob + ".png' style='float:left'>" + "      " + gureIturriak.Iturriak[i].izena + "</label></span>");	
+			
+        }
+    $("#bista").append("<input type='button' id='iturriGorde' value='Gorde' name='Gorde iturriak'>");
 }
 function ezarpenak(){
-        
-        
-    	for(var i=0; i<Iturriak.length; i++){
-			//alert(iturri_list[i]);
-      			var logob = puntuKendu(id_list[i]);
-      			$("#iturriak").append("<span style='font-size:20px;'><input type='checkbox' id='"+id_list[i]+"' /><label for='" + id_list[i] + "'><img height='18px' width='18px' src='assets/css/images/logoak/" + logob + ".png'>" + "      " + iturri_list[i] + "</label></span><hr>");	
+        $("#bista").html("");
+   
 			
-				if (getBalioa(id_list[i]) == 1) {
-					$('#'+id_list[i]).prop("checked", true);
-				} else {
-					$('#'+id_list[i]).prop("checked", false);
-				}	
-				
-				if ((id_list[i])=="zuzeu"){
-					//alert("barruan");
-					$("#iturriak").append("<strong>Euskaraz eta erderaz</strong>");
-					$("#iturriak").append("<hr>");
-				}
-			}
     
-    $("#bista").html("Irudiak kargatu bai/ez");
-    $("#bista").html("Bistaratzeko berri kopurua ezarri");
-    $("#bista").html("Iturri zerrendan iturri berria txertatu ?");
+
     
     
 
