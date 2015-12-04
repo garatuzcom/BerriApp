@@ -395,6 +395,7 @@ function erakutsiKategoriak(){
      $("#bista").html("Hemen Kategoria zerrenda bistaratu bistan");
 }
 function iturriakDefinitu(){
+    $("#bista").html("");
    // $("#bista").html("Hemen Iturrien zerrenda JSONetik irakurrita + aukeratuak localStoragetik");
      var gureIturriak = JSON.parse(localStorage.getItem("iturriak"));
   //  $("#bista").append("<ul>");
